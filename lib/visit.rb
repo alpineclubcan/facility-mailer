@@ -1,6 +1,10 @@
 class Visit
 
-  Facility = Stuct.new(:code, :name) 
+  Facility = Struct.new(:code, :name) do
+    def to_facility
+      self
+    end
+  end
 
   attr_reader :facility
 
