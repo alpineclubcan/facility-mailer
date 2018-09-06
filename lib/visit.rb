@@ -1,6 +1,6 @@
 class Visit
 
-  Facility = Stuct.new(:code:, :name) 
+  Facility = Stuct.new(:code, :name) 
 
   attr_reader :facility
 
