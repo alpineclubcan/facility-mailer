@@ -9,7 +9,7 @@ class Visit
   attr_reader :facility, :start_date, :number_of_nights
 
   def initialize(facility:, start_date: nil, number_of_nights: 1)
-    @facility = facility
+    @facility = facility.to_facility
     @start_date = start_date
     @number_of_nights = number_of_nights
   end
