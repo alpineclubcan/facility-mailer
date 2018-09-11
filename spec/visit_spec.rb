@@ -2,8 +2,10 @@ require "visit"
 
 describe Visit do
 
+  FACILITY = Visit::Facility.new("CH", "Canmore Clubhouse").freeze
+
   # Construct minimum valid instance with only required keyword
-  subject { Visit.new(facility: Visit::Facility.new("CH", "Canmore Clubhouse")) }
+  subject { Visit.new(facility: FACILITY) }
 
   describe ".initialize" do
     context "when initialization is successful" do
@@ -33,6 +35,30 @@ describe Visit do
 
     it "has a number_of_nights equal to 1" do
       expect(subject.number_of_nights).to eq(1)
+    end
+  end
+
+  describe "#end_date" do
+    it "has the date of start_date plus the number of nights stayed" do
+      expect(subject.end_date).to eq(subject.start_date + subject.number_of_nights)
+    end
+  end
+
+  describe "#finished?" do
+    context "when stay is not yet finished" do
+      subject { Visit::new(facility: FACILITY, start_date: Date.today, number_of_nights: 5) }
+
+      it "returns false" do
+        expect(subject.finished?).to eq(false)
+      end
+    end
+
+    context "when stay has finished" do
+      subject { Visit::new(facility: FACILITY, start_date: Date.new(2018, 01, 01), number_of_nights: 5) }
+
+      it "returns true" do
+        expect(subject.finished?).to eq(true)
+      end
     end
   end
 end
