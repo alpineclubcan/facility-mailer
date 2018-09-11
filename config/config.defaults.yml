@@ -1,0 +1,25 @@
+# Example configuration file for survey mailer
+#
+# This file is the base for all configuration settings.
+# 
+# Note: SMTP delivery is setup to use mailcatcher(see https://mailcatcher.me/)
+# defaults in the test and development environments.
+# 
+# Usage:
+#
+# Copy this file from `config/config.defaults.yml` to `config/config.yml`
+#
+
+test:
+    smtp_host: localhost
+    smtp_port: 1025
+    smtp_user: ''
+    smtp_password: ''
+
+development:
+    smtp_host: localhost
+    smtp_port: 1025
+    smtp_user: ''
+    smtp_password: ''
+
+production:
