@@ -13,6 +13,10 @@ describe Visit do
         # Shitty workaround for rspec behavior with keyword exposure in :new with respond_to matcher
         expect(subject.method(:initialize).parameters).to eq([[:keyreq, :facility], [:key, :start_date], [:key, :number_of_nights]])
       end
+
+      it "freezes the object" do
+        expect(subject).to be_frozen
+      end
     end
 
     context "when invalid facility is given" do

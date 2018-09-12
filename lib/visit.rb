@@ -14,6 +14,7 @@ class Visit
     @facility = facility.to_facility
     @start_date = start_date
     @number_of_nights = number_of_nights.to_int
+    freeze
   end
 
   def end_date
