@@ -14,3 +14,28 @@
 # All parameters enter through the `config/config.yml` file. If it doesn't exist, copy the 
 # `config/config.defaults.yml` file over and make sure to set your production variables.
 #
+
+require 'pg'
+require 'sneakers'
+
+module HutSurveyMailer
+  def self.load_config(config_path:)
+  end
+
+  def self.load_template(html_path:, text_path:)
+  end
+end
+
+begin
+  conn = PG.connect(dbname: 'merlin_training', user: 'liam', password: 'password')
+
+rescue PG::Error => e
+  puts e.message
+
+ensure
+  conn.close if conn
+
+end
+
+
+
