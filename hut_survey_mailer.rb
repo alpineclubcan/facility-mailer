@@ -15,6 +15,7 @@
 # `config/config.defaults.yml` file over and make sure to set your production variables.
 #
 
+require 'yaml'
 require 'pg'
 require 'sneakers'
 
@@ -27,7 +28,7 @@ module HutSurveyMailer
 end
 
 begin
-  conn = PG.connect(dbname: 'merlin_training', user: 'liam', password: 'password')
+  conn = PG.connect(dbname: 'name', user: 'user', password: 'password')
 
 rescue PG::Error => e
   puts e.message
