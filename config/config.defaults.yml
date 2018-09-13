@@ -19,6 +19,9 @@ test:
     text_template: templates/hut_survey_email.txt.erb
     html_template: templates/hut_survey_email.html.erb
 
+    # Delay in days. When 2, send emails for visits ending 2 days ago
+    email_delay: 2
+
 development:
     smtp_host: localhost
     smtp_port: 1025
@@ -27,5 +30,8 @@ development:
 
     text_template: templates/hut_survey_email.txt.erb
     html_template: templates/hut_survey_email.html.erb
+
+    # Delay in days. When 2, send emails for visits ending 2 days ago
+    email_delay: 2
 
 production:
