@@ -1,14 +1,16 @@
-class SurveyEmail
-  attr_reader :recipient, :visit, :template
+require 'erb'
 
-  def initialize(recipient:, visit:, template:)
-    @recipient = recipient
+class SurveyEmail
+  Template = Struct.new(:html, :text)
+
+  attr_reader :guest, :visit
+
+  def initialize(guest:, visit:)
+    @guest = guest
     @visit = visit
-    @template = template
     freeze
   end
 
-  def mail
-
+  def render(template:)
   end
 end
