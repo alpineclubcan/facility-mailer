@@ -3,10 +3,9 @@ require 'erb'
 class SurveyEmail
   Template = Struct.new(:html, :text)
 
-  attr_reader :guest, :visit
+  attr_reader :visit
 
-  def initialize(guest:, visit:)
-    @guest = guest
+  def initialize(visit:)
     @visit = visit
     freeze
   end
