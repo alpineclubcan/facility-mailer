@@ -16,6 +16,7 @@
 #
 
 require './merlin'
+
 require 'hash_dot'
 require 'pathname'
 require 'pg'
