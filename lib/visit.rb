@@ -26,4 +26,8 @@ class Visit
     end_date < Date.today
   end
 
+  def to_visit
+    self
+  end
+
 end
