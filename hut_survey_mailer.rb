@@ -15,28 +15,18 @@
 # `config/config.defaults.yml` file over and make sure to set your production variables.
 #
 
-require 'yaml'
+require './merlin'
+require 'hash_dot'
+require 'pathname'
 require 'pg'
 require 'sneakers'
+require 'yaml'
 
-module HutSurveyMailer
-  def self.load_config(config_path:)
-  end
+CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
 
-  def self.load_template(html_path:, text_path:)
-  end
-end
+ENVIRONMENT = ENV['MAILER_ENV'] || 'development'
+CONFIG = YAML.load_file(CONFIG_PATH)[ENVIRONMENT].to_dot
 
-begin
-  conn = PG.connect(dbname: 'name', user: 'user', password: 'password')
+visits = Merlin::visits_from_days(db: CONFIG.db, delay: CONFIG.sending_options.delay)
 
-rescue PG::Error => e
-  puts e.message
-
-ensure
-  conn.close if conn
-
-end
-
-
-
+visits.each { |visit| puts visit.guest.name.formal }
