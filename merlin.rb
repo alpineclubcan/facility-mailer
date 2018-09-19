@@ -18,7 +18,7 @@ module Merlin
         email = Guest::EmailAddress.new(row['email_address'])
 
         guest = Guest.new(name: Guest::EmptyName.new, email: email)
-        visit = Visit.new(facility: facility, guest: guest, start_date: row['start_date'], number_of_nights: row['number_of_nights'])
+        visit = Visit.new(facility: facility, guest: guest, start_date: Date.parse(row['start_date']), number_of_nights: row['number_of_nights'])
 
         visits << visit
       end
