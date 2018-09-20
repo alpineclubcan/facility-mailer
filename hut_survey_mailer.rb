@@ -21,7 +21,6 @@ require './lib/survey_email'
 require 'hash_dot'
 require 'pathname'
 require 'pg'
-require 'sneakers'
 require 'yaml'
 
 CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
