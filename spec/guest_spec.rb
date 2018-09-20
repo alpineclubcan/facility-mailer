@@ -1,7 +1,7 @@
 require 'guest'
 
 describe Guest do
-  NAME = Guest::Name.new("Joan", "OfArc")
+  NAME = Guest::IndividualName.new("Joan", "OfArc")
   EMAIL_ADDRESS = Guest::EmailAddress.new("death.by.sword@gmail.com")
 
   subject { Guest.new(name: NAME, email: EMAIL_ADDRESS) }
@@ -13,7 +13,7 @@ describe Guest do
 
   describe "#initialize" do
     it "accepts correct keywords" do
-      expect(subject.method(:initialize).parameters).to eq([[:keyreq, :name], [:keyreq, :email]])
+      expect(subject.method(:initialize).parameters).to eq([[:keyreq, :email], [:key, :name]])
     end
 
     it "correctly sets attributes accessed by messages" do
