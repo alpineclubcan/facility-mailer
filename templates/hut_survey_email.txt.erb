@@ -1,13 +1,13 @@
-Dear <%= recipient.name %>,
+Dear <%= @visit.guest.name.informal %>,
 
-Thank you for choosing to stay with us at <%= facility.name %>.
+Thank you for choosing to stay with us at <%= @visit.facility.name %> between the dates of <%= @visit.start_date %> and <%= @visit.end_date %>.
 
 Our staff are committed to ensuring your stay is both enjoyable and comfortable. 
 
 We are conducting research so that we can better understand how to make your experiences more enjoyable.
 
 Tell us about your visit. Please fill out our survey:
-<%= survey_url.to_s %> 
+https://form.jotform.com/82524425273253?facility=<%= @visit.facility.code %>&email=<%= @visit.guest.email %>&arrival_date=<%= @visit.start_date %>&departure_date=<%= @visit.end_date %>
 
 Thanks & Best Regards,
 
