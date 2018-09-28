@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby 
 # Hut Survey Mailer
+#
+# Version 0.1.1
 # 
 # The Alpine Club of Canada is a non-profit organization that promotes
 # mountain culture and involvement in mountain activities. The Club manages
@@ -15,13 +17,15 @@
 # `config/config.defaults.yml` file over and make sure to set your production variables.
 #
 
-require './merlin'
-require './lib/survey_email'
-
-require 'hash_dot'
+# Third-party requires
 require 'pathname'
+require 'hash_dot'
 require 'pg'
 require 'yaml'
+
+# Local requires
+require Pathname(__dir__).join('merlin.rb')
+require Pathname(__dir__).join('lib', 'survey_email.rb')
 
 CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
 
