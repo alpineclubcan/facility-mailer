@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 # Hut Survey Mailer
 #
-# Version 0.1.1
+# Version 0.1.2
 # 
 # The Alpine Club of Canada is a non-profit organization that promotes
 # mountain culture and involvement in mountain activities. The Club manages
