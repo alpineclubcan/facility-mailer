@@ -1,7 +1,7 @@
 # Hide fugly procedural database access code in here!
 
-require './lib/guest'
-require './lib/visit'
+require Pathname(__dir__).join('lib', 'guest.rb')
+require Pathname(__dir__).join('lib', 'visit.rb')
 
 module Merlin
   def self.visits_from_days(db:, delay:)
