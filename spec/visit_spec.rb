@@ -5,13 +5,13 @@ describe Visit do
   GUEST = Guest.new(email: Guest::EmailAddress.new('family@darpa.com'), name: Guest::IndividualName.new('James', 'Bond'))
 
   # Construct minimum valid instance with only required keyword
-  subject { Visit.new(facility: FACILITY, guest: GUEST) }
+  subject { Visit.new(reservation_id: 0, facility: FACILITY, guest: GUEST) }
 
   describe ".initialize" do
     context "when initialization is successful" do
       it "accepts the correct keywords" do
         # Shitty workaround for rspec behavior with keyword exposure in :new with respond_to matcher
-        expect(subject.method(:initialize).parameters).to eq([[:keyreq, :facility], [:keyreq, :guest], [:key, :start_date], [:key, :number_of_nights]])
+        expect(subject.method(:initialize).parameters).to eq([[:keyreq, :reservation_id], [:keyreq, :facility], [:keyreq, :guest], [:key, :start_date], [:key, :number_of_nights]])
       end
 
       it "freezes the object" do
@@ -21,7 +21,7 @@ describe Visit do
 
     context "when invalid facility is given" do
       it "fails to when an invalid facility is given" do
-        expect { Visit.new(facility: nil, guest: GUEST) }.to raise_error(NoMethodError)
+        expect { Visit.new(reservation_id: 0, facility: nil, guest: GUEST) }.to raise_error(NoMethodError)
       end
     end
   end
@@ -50,7 +50,7 @@ describe Visit do
 
   describe "#finished?" do
     context "when stay is not yet finished" do
-      subject { Visit::new(facility: FACILITY, guest: GUEST, start_date: Date.today, number_of_nights: 5) }
+      subject { Visit::new(reservation_id: 0, facility: FACILITY, guest: GUEST, start_date: Date.today, number_of_nights: 5) }
 
       it "returns false" do
         expect(subject.finished?).to eq(false)
@@ -58,7 +58,7 @@ describe Visit do
     end
 
     context "when stay has finished" do
-      subject { Visit::new(facility: FACILITY, guest: GUEST, start_date: Date.new(2018, 01, 01), number_of_nights: 5) }
+      subject { Visit::new(reservation_id: 0, facility: FACILITY, guest: GUEST, start_date: Date.new(2018, 01, 01), number_of_nights: 5) }
 
       it "returns true" do
         expect(subject.finished?).to eq(true)

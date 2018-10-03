@@ -10,6 +10,8 @@ class SurveyEmail
     end
   end
 
+  attr_reader :visit
+
   def initialize(visit:, template:)
     @visit = visit.to_visit
     @template = template.to_template
@@ -39,7 +41,6 @@ class SurveyEmail
   CONTENT_TYPE_HTML = 'text/html; charset=utf-8'
   CONTENT_TYPE_TEXT = 'text/plain; charset=utf-8'
 
-
-  attr_reader :visit, :template
+  attr_reader :template
 
 end
