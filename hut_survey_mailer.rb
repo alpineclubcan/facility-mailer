@@ -44,7 +44,20 @@ end
 
 visits = Merlin::visits_from_days(db: CONFIG.db, delay: CONFIG.sending_options.delay)
 
-emails = visits.map { |visit| SurveyEmail.new(visit: visit, template: EMAIL_TEMPLATE).render }
+emails = visits.map { |visit| SurveyEmail.new(visit: visit, template: EMAIL_TEMPLATE) }
 
-emails.each { |msg| msg.deliver! }
+puts "No visits were found ending on #{Date::today - CONFIG.sending_options.delay}." if emails.empty?
+
+emails.each do |email|
+
+  if Merlin::hut_survey_for_visit(db: CONFIG.db, email: email)
+    puts 'Email skipped because hut survey already exists.'
+    next
+  end
+
+  email.render.deliver!
+
+  puts Merlin::log_email_for_visit(db: CONFIG.db, email: email)
+
+end
 
