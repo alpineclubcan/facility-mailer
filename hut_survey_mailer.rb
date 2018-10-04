@@ -55,9 +55,7 @@ emails.each do |email|
     next
   end
 
-  email.render.deliver!
-
-  puts Merlin::log_email_for_visit(db: CONFIG.db, email: email)
+  Merlin::deliver_survey_email(db: CONFIG.db, email: email)
 
 end
 
