@@ -51,7 +51,8 @@ module Merlin
       log_email_for_visit(db: db, email: email)
 
     rescue => e
-      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the survey email."
+      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the survey email.\n#{e.backtrace}"
+      raise
     end
   end
 
