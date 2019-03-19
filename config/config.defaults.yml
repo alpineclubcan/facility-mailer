@@ -26,10 +26,12 @@ test:
 
     sending_options:
         - delay: 2
+          subject: Thank you for staying with us!
           template: 
               html: templates/hut_survey_email.html.erb
               text: templates/hut_survey_email.txt.erb
         - delay: -5
+          subject: Don't forget about your upcoming reservation!
           template: 
               html: templates/reservation_reminder_email.html.erb
               text: templates/reservation_reminder_email.txt.erb
@@ -50,10 +52,12 @@ development:
 
     sending_options:
         - delay: 2
+          subject: Thank you for staying with us!
           template: 
               html: templates/hut_survey_email.html.erb
               text: templates/hut_survey_email.txt.erb
         - delay: -5
+          subject: Don't forget about your upcoming reservation!
           template: 
               html: templates/reservation_reminder_email.html.erb
               text: templates/reservation_reminder_email.txt.erb
@@ -74,10 +78,12 @@ production:
 
     sending_options:
         - delay: 2
+          subject: Thank you for staying with us!
           template: 
               html: templates/hut_survey_email.html.erb
               text: templates/hut_survey_email.txt.erb
         - delay: -5
+          subject: Don't forget about your upcoming reservation!
           template: 
               html: templates/reservation_reminder_email.html.erb
               text: templates/reservation_reminder_email.txt.erb
