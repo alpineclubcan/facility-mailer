@@ -22,7 +22,9 @@ test:
         html: templates/hut_survey_email.html.erb
 
     sending_options:
-        delay: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
+        delay:
+            survey: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
+            reminder: -5
 
 development:
     smtp:
@@ -36,7 +38,9 @@ development:
         html: templates/hut_survey_email.html.erb
 
     sending_options:
-        delay: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
+        delay:
+            survey: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
+            reminder: -5
 
 production:
 
