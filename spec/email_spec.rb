@@ -1,13 +1,13 @@
-require 'survey_email'
+require 'email'
 require 'visit'
 require 'guest'
 
-describe SurveyEmail do
+describe Email do
   FACILITY = Visit::Facility.new("CH", "Canmore Clubhouse")
   VISIT = Visit.new(reservation_id: 0, facility: FACILITY, guest: Guest.new(email: Guest::EmailAddress.new('mountain@acc.net'), name: Guest::EmptyName.new), number_of_nights: 5)
-  TEMPLATE = SurveyEmail::Template.new('<h1>HTML version</h1>', 'This is text version of email.')
+  TEMPLATE = Email::Template.new('<h1>HTML version</h1>', 'This is text version of email.')
 
-  subject { SurveyEmail.new(visit: VISIT, template: TEMPLATE) }
+  subject { Email.new(visit: VISIT, subject: 'Really sketchy subject line', template: TEMPLATE) }
 
   it "responds to messages" do
     expect(subject).to respond_to(:render)
@@ -15,7 +15,7 @@ describe SurveyEmail do
 
   describe "#initialize" do
     it "accepts correct keywords" do
-      expect(subject.method(:initialize).parameters).to eq([[:keyreq, :visit], [:keyreq, :template]])
+      expect(subject.method(:initialize).parameters).to eq([[:keyreq, :visit], [:keyreq, :subject], [:keyreq, :template]])
     end
 
     it "freezes the object" do
