@@ -17,14 +17,17 @@ test:
         user: ''
         password: ''
 
-    template:
-        text: templates/hut_survey_email.txt.erb
-        html: templates/hut_survey_email.html.erb
-
     sending_options:
-        delay:
-            survey: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
-            reminder: -5
+        survey:
+            delay: 2
+            template: 
+                html: templates/hut_survey_email.html.erb
+                text: templates/hut_survey_email.txt.erb
+        reminder:
+            delay: -5
+            template: 
+                html: templates/reservation_reminder_email.html.erb
+                text: templates/reservation_reminder_email.txt.erb
 
 development:
     smtp:
@@ -33,14 +36,17 @@ development:
         user: ''
         password: ''
 
-    template:
-        text: templates/hut_survey_email.txt.erb
-        html: templates/hut_survey_email.html.erb
-
     sending_options:
-        delay:
-            survey: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
-            reminder: -5
+        survey:
+            delay: 2
+            template: 
+                html: templates/hut_survey_email.html.erb
+                text: templates/hut_survey_email.txt.erb
+        reminder:
+            delay: -5
+            template: 
+                html: templates/reservation_reminder_email.html.erb
+                text: templates/reservation_reminder_email.txt.erb
 
 production:
 
