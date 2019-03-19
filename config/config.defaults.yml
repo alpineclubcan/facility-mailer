@@ -17,6 +17,13 @@ test:
         user: ''
         password: ''
 
+    db:
+        host: localhost 
+        dbname: db_name
+        port: 5432
+        user: username
+        password: password
+
     sending_options:
         - delay: 2
           template: 
@@ -34,6 +41,13 @@ development:
         user: ''
         password: ''
 
+    db:
+        host: localhost 
+        dbname: db_name
+        port: 5432
+        user: username
+        password: password
+
     sending_options:
         - delay: 2
           template: 
@@ -45,4 +59,26 @@ development:
               text: templates/reservation_reminder_email.txt.erb
 
 production:
+    smtp:
+        host: localhost
+        port: 1025
+        user: ''
+        password: ''
+
+    db:
+        host: localhost 
+        dbname: db_name
+        port: 5432
+        user: username
+        password: password
+
+    sending_options:
+        - delay: 2
+          template: 
+              html: templates/hut_survey_email.html.erb
+              text: templates/hut_survey_email.txt.erb
+        - delay: -5
+          template: 
+              html: templates/reservation_reminder_email.html.erb
+              text: templates/reservation_reminder_email.txt.erb
 
