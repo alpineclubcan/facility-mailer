@@ -28,6 +28,11 @@ require Pathname(__dir__).join('merlin.rb')
 require Pathname(__dir__).join('lib', 'email.rb')
 
 CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
+TEMPLATES_DIR = Pathname(__dir__).join('templates')
+
+def template(name:, format:)
+  File.read("#{TEMPLATES_DIR}/#{name}.#{format.to_s}.erb")
+end
 
 ENVIRONMENT = ENV['MAILER_ENV'] || 'development'
 CONFIG = YAML.load_file(CONFIG_PATH)[ENVIRONMENT].to_dot
@@ -40,7 +45,7 @@ Mail.defaults do
 end
 
 CONFIG.sending_options.each do |option|
-  email_template = Email::Template.new(option.template.html, option.template.text)
+  email_template = Email::Template.new(template(name: option.template, format: :html), template(name: option.template, type: :txt))
   visits = Merlin::visits_from_days(db: CONFIG.db, delay: option.delay)
   emails = visits.map { |visit| Email.new(visit: visit, subject: option.subject, template: email_template) }
 
