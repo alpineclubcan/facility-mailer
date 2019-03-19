@@ -1,7 +1,7 @@
 require 'erb'
 require 'mail'
 
-class SurveyEmail
+class Email
   FROM = 'confirmations@alpineclubofcanada.ca'.freeze
 
   Template = Struct.new(:html, :text) do
