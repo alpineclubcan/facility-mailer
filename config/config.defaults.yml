@@ -18,16 +18,14 @@ test:
         password: ''
 
     sending_options:
-        survey:
-            delay: 2
-            template: 
-                html: templates/hut_survey_email.html.erb
-                text: templates/hut_survey_email.txt.erb
-        reminder:
-            delay: -5
-            template: 
-                html: templates/reservation_reminder_email.html.erb
-                text: templates/reservation_reminder_email.txt.erb
+        - delay: 2
+          template: 
+              html: templates/hut_survey_email.html.erb
+              text: templates/hut_survey_email.txt.erb
+        - delay: -5
+          template: 
+              html: templates/reservation_reminder_email.html.erb
+              text: templates/reservation_reminder_email.txt.erb
 
 development:
     smtp:
@@ -37,16 +35,14 @@ development:
         password: ''
 
     sending_options:
-        survey:
-            delay: 2
-            template: 
-                html: templates/hut_survey_email.html.erb
-                text: templates/hut_survey_email.txt.erb
-        reminder:
-            delay: -5
-            template: 
-                html: templates/reservation_reminder_email.html.erb
-                text: templates/reservation_reminder_email.txt.erb
+        - delay: 2
+          template: 
+              html: templates/hut_survey_email.html.erb
+              text: templates/hut_survey_email.txt.erb
+        - delay: -5
+          template: 
+              html: templates/reservation_reminder_email.html.erb
+              text: templates/reservation_reminder_email.txt.erb
 
 production:
 
