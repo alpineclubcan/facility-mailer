@@ -12,8 +12,9 @@ class Email
 
   attr_reader :visit
 
-  def initialize(visit:, template:)
+  def initialize(visit:, subject:, template:)
     @visit = visit.to_visit
+    @subject = subject.to_s
     @template = template.to_template
     freeze
   end
@@ -22,7 +23,7 @@ class Email
     Mail.new do |m|
       m.from FROM
       m.to visit.guest.email.to_s
-      m.subject 'Thank you for staying with us!'
+      m.subject subject
 
       m.text_part do |msg| 
         msg.content_type CONTENT_TYPE_TEXT
@@ -41,6 +42,6 @@ class Email
   CONTENT_TYPE_HTML = 'text/html; charset=utf-8'
   CONTENT_TYPE_TEXT = 'text/plain; charset=utf-8'
 
-  attr_reader :template
+  attr_reader :template, :subject
 
 end
