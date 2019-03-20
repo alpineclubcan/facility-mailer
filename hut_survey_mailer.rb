@@ -45,7 +45,7 @@ Mail.defaults do
 end
 
 CONFIG.sending_options.each do |option|
-  next if option.skip
+  next if option.fetch('skip', false) 
 
   email_template = Email::Template.new(template(name: option.template, format: :html), template(name: option.template, format: :txt))
   visits = Merlin::visits_from_days(db: CONFIG.db, delay: option.delay)
