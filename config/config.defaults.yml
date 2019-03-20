@@ -31,6 +31,7 @@ test:
         - delay: -5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
+          skip: true
 
 development:
     smtp:
@@ -53,6 +54,7 @@ development:
         - delay: -5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
+          skip: true
 
 production:
     smtp:
@@ -75,4 +77,5 @@ production:
         - delay: -5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
+          skip: true
 
