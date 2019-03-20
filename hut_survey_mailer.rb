@@ -56,7 +56,7 @@ CONFIG.sending_options.each do |option|
 
   emails.each do |email|
     if Merlin::email_for_visit(db: CONFIG.db, email: email)
-      puts 'Email skipped because one already exists.'
+      puts 'Email skipped because one has already been sent.'
       next
     end
 
