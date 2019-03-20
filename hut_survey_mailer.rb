@@ -29,11 +29,6 @@ require Pathname(__dir__).join('lib', 'email.rb')
 
 CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
 TEMPLATES_DIR = Pathname(__dir__).join('templates')
-
-def template(name:, format:)
-  File.read("#{TEMPLATES_DIR}/#{name}.#{format.to_s}.erb")
-end
-
 ENVIRONMENT = ENV['MAILER_ENV'] || 'development'
 CONFIG = YAML.load_file(CONFIG_PATH)[ENVIRONMENT].to_dot
 
@@ -44,6 +39,14 @@ Mail.defaults do
                            password: CONFIG.smtp.password }
 end
 
+def production?
+  ENVIRONMENT == 'production'
+end
+
+def template(name:, format:)
+  File.read("#{TEMPLATES_DIR}/#{name}.#{format.to_s}.erb")
+end
+
 CONFIG.sending_options.each do |option|
   next if option.fetch('skip', false) 
 
@@ -52,12 +55,12 @@ CONFIG.sending_options.each do |option|
   emails = visits.map { |visit| Email.new(visit: visit, subject: option.subject, template: email_template) }
 
   emails.each do |email|
-    if Merlin::hut_survey_for_visit(db: CONFIG.db, email: email)
-      puts 'Email skipped because hut survey already exists.'
+    if Merlin::email_for_visit(db: CONFIG.db, email: email)
+      puts 'Email skipped because one already exists.'
       next
     end
 
-    Merlin::deliver_survey_email(db: CONFIG.db, email: email)
+    Merlin::deliver_survey_email(db: CONFIG.db, email: email, log_email: production?)
 
   end
 
