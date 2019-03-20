@@ -10,7 +10,7 @@ class Email
     end
   end
 
-  attr_reader :visit
+  attr_reader :visit, :template
 
   def initialize(visit:, subject:, template:)
     @visit = visit.to_visit
@@ -42,6 +42,6 @@ class Email
   CONTENT_TYPE_HTML = 'text/html; charset=utf-8'
   CONTENT_TYPE_TEXT = 'text/plain; charset=utf-8'
 
-  attr_reader :template, :subject
+  attr_reader :subject
 
 end
