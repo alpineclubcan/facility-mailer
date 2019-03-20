@@ -48,7 +48,7 @@ module Merlin
         puts "Email successfully delivered to #{email.visit.guest.email} at #{fnow}."
       end
 
-      log_email_for_visit(db: db, email: email) if log_email
+      log_email(db: db, email: email) if log_email
 
     rescue => e
       puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the survey email.\n#{e.backtrace}"
@@ -82,7 +82,7 @@ module Merlin
 
   DATE_FORMAT = '%H:%M:%S %Y-%m-%d'.freeze
 
-  def self.log_email_for_visit(db:, email:)
+  def self.log_email(db:, email:)
     begin
       conn = PG::connect(db)
 
