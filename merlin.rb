@@ -51,13 +51,13 @@ module Merlin
       log_email(db: db, email: email) if log_email
 
     rescue => e
-      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the survey email.\n#{e.backtrace}"
+      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the email.\n#{e.backtrace}"
       raise
     end
   end
 
   def self.email_for_visit(db:, email:)
-    hut_survey = nil
+    record = nil
     visit = email.visit
 
     begin
@@ -69,13 +69,13 @@ module Merlin
       hut_survey = res.first
 
     rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting hut survey from database."
+      puts "An error of type #{e.class} occurred at #{fnow} while getting email from database."
 
     ensure
       conn&.close
     end
 
-    hut_survey
+    record
   end
 
   private
