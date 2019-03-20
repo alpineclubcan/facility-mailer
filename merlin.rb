@@ -36,7 +36,7 @@ module Merlin
   end
 
 
-  def self.deliver_survey_email(db:, email:)
+  def self.deliver_survey_email(db:, email:, log_email: false)
     message = email.render
 
     begin
@@ -48,7 +48,7 @@ module Merlin
         puts "Email successfully delivered to #{email.visit.guest.email} at #{fnow}."
       end
 
-      log_email_for_visit(db: db, email: email)
+      log_email_for_visit(db: db, email: email) if log_email
 
     rescue => e
       puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the survey email.\n#{e.backtrace}"
@@ -56,7 +56,7 @@ module Merlin
     end
   end
 
-  def self.hut_survey_for_visit(db:, email:)
+  def self.email_for_visit(db:, email:)
     hut_survey = nil
     visit = email.visit
 
