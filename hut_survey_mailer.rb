@@ -34,7 +34,7 @@ TEMPLATES_DIR = Pathname(__dir__).join('templates')
 ENVIRONMENT = ENV['MAILER_ENV'] || 'development'
 CONFIG = YAML.load_file(CONFIG_PATH)[ENVIRONMENT].to_dot
 
-FACILITIES = YAML.load_file(FACILITIES_PATH)
+FACILITIES = YAML.load_file(FACILITIES_PATH).to_dot.list
 
 Mail.defaults do
   delivery_method :smtp, { address: CONFIG.smtp.host,
