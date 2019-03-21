@@ -28,9 +28,13 @@ require Pathname(__dir__).join('merlin.rb')
 require Pathname(__dir__).join('lib', 'email.rb')
 
 CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
+FACILITIES_PATH = Pathname(__dir__).join('config', 'facilities.yml')
 TEMPLATES_DIR = Pathname(__dir__).join('templates')
+
 ENVIRONMENT = ENV['MAILER_ENV'] || 'development'
 CONFIG = YAML.load_file(CONFIG_PATH)[ENVIRONMENT].to_dot
+
+FACILITIES = YAML.load_file(FACILITIES_PATH)
 
 Mail.defaults do
   delivery_method :smtp, { address: CONFIG.smtp.host,
@@ -52,7 +56,8 @@ CONFIG.sending_options.each do |option|
 
   email_template = Email::Template.new(template(name: option.template, format: :html), template(name: option.template, format: :txt))
   visits = Merlin::visits_from_days(db: CONFIG.db, delay: option.delay)
-  emails = visits.map { |visit| Email.new(visit: visit, subject: option.subject, template: email_template) }
+
+  emails = visits.map { |visit| Email.new(options: { to: visit.guest.email.to_s, subject: option.subject, template: email_template }.to_dot, data: { visit: visit }.to_dot) }
 
   emails.each do |email|
     if Merlin::email_for_visit(db: CONFIG.db, email: email)
