@@ -26,8 +26,8 @@ module Merlin
       end
 
     rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting visits from the database."
-
+      puts "An error of type #{e.class} occurred at #{fnow} while getting visits from the database.\n#{e.message}"
+      raise
     ensure
       conn&.close
     end
@@ -43,22 +43,22 @@ module Merlin
       message.deliver!
 
       if message.bounced?
-        puts "Email to #{email.visit.guest.email} bounced at #{fnow} and may not be delivered."
+        puts "Email to #{email.options.to} bounced at #{fnow} and may not be delivered."
       else
-        puts "Email successfully delivered to #{email.visit.guest.email} at #{fnow}."
+        puts "Email successfully delivered to #{email.options.to} at #{fnow}."
       end
 
       log_email(db: db, email: email) if log_email
 
     rescue => e
-      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the email.\n#{e.backtrace}"
+      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the email.\n#{e.message}"
       raise
     end
   end
 
   def self.email_for_visit(db:, email:)
     record = nil
-    visit = email.visit
+    visit = email.data.visit
 
     begin
       conn = PG::connect(db)
@@ -69,8 +69,8 @@ module Merlin
       hut_survey = res.first
 
     rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting email from database."
-
+      puts "An error of type #{e.class} occurred at #{fnow} while getting email from database.\n#{e.message}"
+      raise
     ensure
       conn&.close
     end
@@ -86,14 +86,14 @@ module Merlin
     begin
       conn = PG::connect(db)
 
-      visit = email.visit
+      visit = email.data.visit
       
       res = conn.exec_params(
         'INSERT INTO public.hut_email(reservation_id, email, end_date, facility_code, date_sent) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date)', 
         [visit.reservation_id, visit.guest.email, visit.end_date, visit.facility.code, Date::today]
       )
 
-      puts "Email logged for #{email.visit.guest.email} at #{fnow}."
+      puts "Email logged for #{email.options.to} at #{fnow}."
 
     rescue PG::Error => e  
       puts "An error of type #{e.class} occurred at #{fnow} while logging survey to the database."
