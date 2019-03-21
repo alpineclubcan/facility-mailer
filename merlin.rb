@@ -63,7 +63,7 @@ module Merlin
     begin
       conn = PG::connect(db)
 
-      res = conn.exec_params('SELECT * FROM get_hut_survey_for_visit($1::varchar, $2::date, $3::varchar)',
+      res = conn.exec_params('SELECT * FROM get_hut_email_for_visit($1::varchar, $2::date, $3::varchar)',
                              [visit.guest.email, visit.end_date, visit.facility.code]
                             )
       hut_survey = res.first
@@ -89,7 +89,7 @@ module Merlin
       visit = email.visit
       
       res = conn.exec_params(
-        'INSERT INTO public.hut_survey(reservation_id, email, end_date, facility_code, date_sent) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date)', 
+        'INSERT INTO public.hut_email(reservation_id, email, end_date, facility_code, date_sent) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date)', 
         [visit.reservation_id, visit.guest.email, visit.end_date, visit.facility.code, Date::today]
       )
 
