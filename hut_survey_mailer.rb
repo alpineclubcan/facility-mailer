@@ -57,7 +57,7 @@ CONFIG.sending_options.each do |option|
   email_template = Email::Template.new(template(name: option.template, format: :html), template(name: option.template, format: :txt))
   visits = Merlin::visits_from_days(db: CONFIG.db, delay: option.delay)
 
-  emails = visits.map { |visit| Email.new(options: { to: visit.guest.email.to_s, subject: option.subject, template: email_template }.to_dot, data: { visit: visit }.to_dot) }
+  emails = visits.map { |visit| Email.new(options: { to: visit.guest.email.to_s, subject: option.subject, template: email_template }.to_dot, data: { visit: visit, facility: FACILITIES.select { |val| val.code == visit.facility.code } }.to_dot) }
 
   emails.each do |email|
     if Merlin::email_for_visit(db: CONFIG.db, email: email)
