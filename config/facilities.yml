@@ -1,156 +1,156 @@
 list:
     -
-      '5040':
+        code: '5040'
         blurb: "ACC’s most westerly hut provides access to extensive summer alpine hiking and challenging winter skiing in the heart of Vancouver Island."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/5040_Peak_Hut.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/34-5040-Peak-Hut-tn.jpg 
     -
-      abbot:
+        code: ABBOT
         blurb: "A strenuous technical scramble will bring you to this historic stone hut on the Continental Divide between Mts. Lefroy and Victoria, near Lake Louise. Summer access only."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Abbot_Pass_Hut.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/8-Abbot-Pass-tn.jpg
     -
-      alberta:
+        code: ALBERTA
         blurb: "6-person climbers' hut in the Mt. Alberta area. Used as a base for climbing in summer, not used in winter. Very difficult access."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/LLoyd_MacKay_Mt_Alberta_Hut.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/26-Alberta-tn.jpg
     -
-      asulkan:
+        code: ASULKAN
         blurb: "A base for exceptional backcountry skiing and mountaineering. 10-person hut at the head of Asulkan Valley in Rogers Pass. (Avalanche terrain in winter)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Asulkan_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/15-Asulkan-Hut-tn.jpg
     -
-      balfour:
+        code: BALFOUR
         blurb: "Used for traverses of the Wapta Icefields in summer and winter. (Avalanche terrain, glacier travel required)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Rj_Ritchie_Balfour_Hut.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/12-Balfour-tn.jpg
     -
-      bell:
+        code: BELL
         blurb: "Self-contained cabin for small groups on the Canmore Clubhouse property. Dorm-style rooms and kitchen, living, bathroom facilities. Sleeps 15. Free Wi-Fi."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Bell_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/3-Bell-Cabin-tn.jpg
     -
-      boswell:
+        code: BOSWELL
         blurb: "Private family rooms in a separate self-contained cabin on the Clubhouse property in Canmore. Accommodates up to four families of three to four people. Free Wi-Fi."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Boswell_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/2-Boswell-Cabin-tn.jpg
         serviced: true
     -
-      bow:
+        code: BOW
         blurb: "Outstanding base for summer mountaineering and winter ski touring on the Wapta Icefield. (Avalanche terrain, glacier travel required)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Bow_Hut.aspx
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/10-Bow-Hut-tn.jpg
         serviced: true
     -
-      cairn:
+        code: CAIRN
         blurb: "Mountaineering and alpine rock climbing hut in the Adamant range of the Selkirk Mountains. Helicopter access only."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Ben_Ferris_Great_Cairn_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/21-Great-Cairn-tn.jpg
     -
-      cam:
+        code: CAM
         blurb: "Winter-only cabin for ski tourers and ice climbers in Waterton Lakes National Park. Closed in summer."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Cameron_Lake_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/30-Cameron-Lake-tn.jpg
     -
-      castle:
+        code: CASTLE
         blurb: "Technical climbing approach to a 6-person hut on Goat Plateau, half-way up Castle Mountain in Banff National Park. Closed in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Castle_Mountain_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/19-Castle-tn.jpg
     -
-      ch:
+        code: CH
         blurb: "31-person hostel with dorm-style accommodation a short drive from Canmore. Great access to all town recreation and amenities. Free Wi-Fi. No smoking on the premises."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Canmore_Clubhouse.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/1-Clubhouse-new-tn1.jpg
         serviced: true
     -
-      colgan:
+        code: COLGAN
         blurb: "Climbing hut in the Valley of the Ten Peaks, Banff. The highest permanent structure in Canada. All approaches require mountaineering and glacier travel. Closed in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Neil_Colgan_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/Screen%20Shot%202018-03-28%20at%2012.05.15%20PM.png
     -
-      colin:
+        code: COLIN
         blurb: "Small wooden hut near Mt. Colin in Jasper National Park. Used as a base for rock climbing on Mt. Colin. Closed in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Mount_Colin_Centennial_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/29-Colin-tn.jpg
     -
-      duncan:
+        code: DUNCAN
         blurb: "The most southerly of the huts on the Wapta Icefield. Used for traverses of the Wapta in summer and winter. (Avalanche terrain, glacier travel required)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Scott_Duncan_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/13-Duncan-Hut-tn.jpg
     -
-      elk:
+        code: ELK
         blurb: "Family-friendly hut in summer and winter. 3-4 hour approach from Peter Lougheed Provincial Park. Also accessible by mountain bike."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Elk_Lakes_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/7-Elk-Lakes-tn.jpg
     -
-      ep:
+        code: EP
         blurb: "The ACC's most popular hut. Used as a base for spectacular day hiking and ski touring at Lake O’Hara. Summer bookings through lottery only."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Elizabeth_Parker_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/5-EP-tn.jpg
     -
-      fm:
+        code: FM
         blurb: "Winter: world-class ski touring with heli access. Reservations by lottery. Summer: spectacular granite mountaineering with very long approach hike. In the Adamant range of the Selkirk Mountains."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Fairy_Meadow_Bill_Putnam_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/20-Fairy-Meadow-tn.jpg
     -
-      fryatt:
+        code: FRYATT
         blurb: "Cozy base for mountaineering, hiking and ski touring in the Fryatt Valley in Jasper National Park. (Avalanche terrain in winter)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Sydeny_Vallance_Fryatt_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/27-Fryatt.jpg
     -
-      gcc:
+        code: GCC
         blurb: "Remote and difficult to access hut in the Dawson Range near Rogers Pass. Used for mountaineering and ski touring."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Glacier_Circle_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/17-Glacier-Circle-tn.jpg
     -
-      guy:
+        code: GUY
         blurb: "The ACC's newest hut, the Guy Hut opens up exciting new terrain for ski tourers on the Wapta, including the Bow-Yoho Traverse. Open in winter only. (Avalanche terrain, glacier travel required)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Louise_and_Richard_Guy_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/11-Guy-Hut-tn.jpg
     -
-      kain:
+        code: KAIN
         blurb: "Climbing hut in the world-famous Bugaboos. Superb granite mountaineering and alpine rock climbing in south-eastern BC. Closed in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Conrad_Kain_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/22-Kain-tn.jpg
         serviced: true
     -
-      kk:
+        code: KK
         blurb: "Luxurious fly-in self-catered backcountry ski lodge in winter and hiking destination in summer. Winter bookings through lottery only."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Kokanee_Glacier_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/23-Kokanee-tn.jpg
         serviced: true
     -
-      peyto:
+        code: PEYTO
         blurb: "Accessed by glacier travel. The most northerly hut on the Wapta Icefield. Used on traverses of the Wapta in both summer and winter. (Avalanche terrain, glacier travel required)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Peter_And_Catherine_Whyte_Peyto_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/9-Peyto-tn.jpg
     -
-      sc:
+        code: SC
         blurb: "Remote climbers' hut in the Asulkan Range, Rogers Pass, BC. Access involves mountaineering and glacier travel."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Sapphire_Col_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/16-Sapphire-Col-tn.jpg
     -
-      sm:
+        code: SM
         blurb: "Beautiful, family-friendly hiking hut and remote ski touring hut in the Little Yoho Valley. 3-4 hour approach from Takkakaw Falls in summer; very long approach in winter (some avalanche terrain)."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Stanley_Mitchell_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/6-Stanley-Mitchell-tn.jpg
     -
-      ss:
+        code: SS
         blurb: "Hiking and mountaineering hut in Kokanee Glacier Provincial Park near Nelson, BC. Closed in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Silver_Spray_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/24-Silver-Spray-tn.jpg
     -
-      wb:
+        code: WB
         blurb: "Located in Kokanee Glacier Provincial Park near Nelson, BC. Used by hikers and mountaineers. Closed in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Woodbury_Cabin.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/25-Woodbury-tn.jpg
     -
-      wg:
+        code: WG
         blurb: "Classic log cabin in the Tonquin Valley in Jasper National Park. Annual caribou closure (Nov. to Feb.). Long approach in winter."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Wates_Gibson_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/28-Wates-Gibson-tn.jpg
     -
-      wheeler:
+        code: WHEELER
         blurb: "Historic log cabin hut in Rogers Pass with easy access. Used as a base for summer hiking and mountaineering and winter ski touring."
         link: https://www.alpineclubofcanada.ca/web/ACCMember/Huts/A_O_Wheeler_Hut.aspx
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/14-Wheeler-Hut-tn.jpg
