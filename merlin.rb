@@ -67,8 +67,8 @@ module Merlin
     begin
       conn = PG::connect(db)
 
-      res = conn.exec_params('SELECT * FROM get_hut_email_for_visit($1::varchar, $2::date, $3::varchar)',
-                             [visit.guest.email, visit.end_date, visit.facility.code]
+      res = conn.exec_params('SELECT * FROM get_hut_email_for_visit($1::varchar, $2::date, $3::varchar, $4::varchar)',
+                             [visit.guest.email, visit.end_date, visit.facility.code, email.options.template.name]
                             )
       hut_survey = res.first
 
