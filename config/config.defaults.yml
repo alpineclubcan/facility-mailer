@@ -25,10 +25,10 @@ test:
         password: password
 
     sending_options:
-        - delay: 2
+        - delay: -2
           subject: Thank you for staying with us!
           template: hut_survey_email
-        - delay: -5
+        - delay: 5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
           skip: true
@@ -48,10 +48,10 @@ development:
         password: password
 
     sending_options:
-        - delay: 2
+        - delay: -2
           subject: Thank you for staying with us!
           template: hut_survey_email
-        - delay: -5
+        - delay: 5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
           skip: true
@@ -71,10 +71,10 @@ production:
         password: password
 
     sending_options:
-        - delay: 2
+        - delay: -2
           subject: Thank you for staying with us!
           template: hut_survey_email
-        - delay: -5
+        - delay: 5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
           skip: true

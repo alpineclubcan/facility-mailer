@@ -4,14 +4,19 @@ require Pathname(__dir__).join('lib', 'guest.rb')
 require Pathname(__dir__).join('lib', 'visit.rb')
 
 module Merlin
+  AHEAD_FUNC = 'get_visits_from_days_ahead'
+  BEHIND_FUNC = 'get_visits_from_days_behind'
+
   def self.visits_from_days(db:, delay:)
     visits = []
+
+    func = delay.to_i.positive? ? AHEAD_FUNC : BEHIND_FUNC
 
     begin
       conn = PG::connect(db)
 
-      res = conn.exec_params("SELECT * FROM get_visits_from_days($1::integer)",
-                             [delay.to_i]
+      res = conn.exec_params("SELECT * FROM #{func}($1::integer)",
+                             [delay.to_i.abs]
                             )
 
       res.each do |row|
@@ -34,7 +39,6 @@ module Merlin
 
     visits
   end
-
 
   def self.deliver_survey_email(db:, email:, log_email: false)
     message = email.render
