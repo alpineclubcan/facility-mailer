@@ -93,8 +93,8 @@ module Merlin
       visit = email.data.visit
       
       res = conn.exec_params(
-        'INSERT INTO public.hut_email(reservation_id, email, end_date, facility_code, date_sent) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date)', 
-        [visit.reservation_id, visit.guest.email, visit.end_date, visit.facility.code, Date::today]
+        'INSERT INTO public.hut_email(reservation_id, email, end_date, facility_code, date_sent, template) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date, $6::varchar)', 
+        [visit.reservation_id, visit.guest.email, visit.end_date, visit.facility.code, Date::today, email.options.template.name]
       )
 
       puts "Email logged for #{email.options.to} at #{fnow}."

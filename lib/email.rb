@@ -5,7 +5,7 @@ require 'hash_dot'
 class Email
   FROM = 'confirmations@alpineclubofcanada.ca'.freeze
 
-  Template = Struct.new(:html, :text) do
+  Template = Struct.new(name:, :html, :text) do
     def to_template
       self
     end
