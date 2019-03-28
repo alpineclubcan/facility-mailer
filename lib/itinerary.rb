@@ -8,11 +8,19 @@ class Itinerary
 
   Reservation = Struct.new(:facility, :bookings) do
     def congruent?
-      bookings.map { |booking| booking.number_of_users }.uniq.length == 1
+      bookings.map { |booking| booking.number_of_users }
+              .uniq
+              .length == 1
     end
 
     def continuous?
-      # reservation has no gaps
+      dates = bookings.map { |booking| booking.date }.sort
+
+      min = dates.first
+
+      # fix dates differences
+
+      dates.map(min - 1) { |a, b| (b - a).to_i }.uniq.length == 1
     end
 
     def to_reservation
