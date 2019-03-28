@@ -7,8 +7,12 @@ class Itinerary
   end
 
   Reservation = Struct.new(:facility, :bookings) do
+    def congruent?
+      bookings.map { |booking| booking.number_of_users }.uniq.length == 1
+    end
+
     def continuous?
-      # reservation has no gaps and number of users does not change
+      # reservation has no gaps
     end
 
     def to_reservation
