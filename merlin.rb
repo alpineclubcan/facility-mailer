@@ -1,7 +1,7 @@
 # Hide fugly procedural database access code in here!
 
 require Pathname(__dir__).join('lib', 'guest.rb')
-require Pathname(__dir__).join('lib', 'visit.rb')
+require Pathname(__dir__).join('lib', 'itinerary.rb')
 
 module Merlin
   AHEAD_FUNC = 'get_visits_from_days_ahead'
