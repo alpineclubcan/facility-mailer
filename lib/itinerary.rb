@@ -29,7 +29,7 @@ class Itinerary
 
   attr_reader :guest, :reservations
 
-  def initialize(:guest, :reservations)
+  def initialize(guest:, reservations:)
     @guest = guest.to_guest
     @reservations = reservations.to_a
     freeze
