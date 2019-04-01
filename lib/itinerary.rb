@@ -31,7 +31,7 @@ class Itinerary
 
   def initialize(guest:, reservations:)
     @guest = guest.to_guest
-    @reservations = reservations.to_a
+    @reservations = reservations.to_a.map { |res| res.to_reservation }
     freeze
   end
 

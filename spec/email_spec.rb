@@ -1,13 +1,13 @@
 require 'email'
-require 'visit'
+require 'itinerary'
 require 'guest'
 
 describe Email do
-  FACILITY = Visit::Facility.new("CH", "Canmore Clubhouse")
-  VISIT = Visit.new(reservation_id: 0, facility: FACILITY, guest: Guest.new(email: Guest::EmailAddress.new('mountain@acc.net'), name: Guest::EmptyName.new), number_of_nights: 5)
-  TEMPLATE = Email::Template.new('<h1>HTML version</h1>', 'This is text version of email.')
+  facility = Itinerary::Facility.new("CH", "Canmore Clubhouse")
+  itinerary = Itinerary.new(guest: Guest.new(name: Guest::EmptyName.new, email: Guest::EmailAddress.new('cheers@examples.com')), reservations: [])
+  template = Email::Template.new('<h1>HTML version</h1>', 'This is text version of email.')
 
-  subject { Email.new(options: { subject: 'Really sketchy subject line', template: TEMPLATE }, data: { visit: VISIT }) }
+  subject { Email.new(options: { subject: 'Really sketchy subject line', template: template }, data: { itinerary: itinerary }) }
 
   it "responds to messages" do
     expect(subject).to respond_to(:render)
