@@ -4,40 +4,109 @@ require Pathname(__dir__).join('lib', 'guest.rb')
 require Pathname(__dir__).join('lib', 'itinerary.rb')
 
 module Merlin
-  AHEAD_FUNC = 'get_visits_from_days_ahead'
-  BEHIND_FUNC = 'get_visits_from_days_behind'
+  Invoice = Struct.new(:id, :contact_id, :contact_email_address)
+  LockCombination = Struct.new(:value, :valid_from, :valid_to)
 
-  def self.visits_from_days(db:, delay:)
-    visits = []
+  def self.get_invoices_with_stays_beginning(db:, date:)
+    lambda do
+      invoices = []
 
-    func = delay.to_i.positive? ? AHEAD_FUNC : BEHIND_FUNC
+      begin
+        conn = PG::connect(db)
 
-    begin
-      conn = PG::connect(db)
+        res = conn.exec_params('SELECT * FROM get_invoices_with_stays_beginning($1::date)', [date.to_date])
 
-      res = conn.exec_params("SELECT * FROM #{func}($1::integer)",
-                             [delay.to_i.abs]
-                            )
+        invoices += res.map(&ROW_TO_INVOICE)
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from beginning.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
+      end
+       
+      invoices
+    end
+  end
 
-      res.each do |row|
-        facility = Visit::Facility.new(row['facility_code'], row['facility_name'])
+  def self.get_invoices_with_stays_ending(db:, date:)
+    lambda do
+      invoices = []
 
-        email = Guest::EmailAddress.new(row['email_address'])
+      begin
+        conn = PG::connect(db)
 
-        guest = Guest.new(name: Guest::EmptyName.new, email: email)
-        visit = Visit.new(reservation_id: row['reservation_id'].to_i, facility: facility, guest: guest, start_date: Date.parse(row['start_date']), number_of_nights: row['number_of_nights'])
+        res = conn.exec_params('SELECT * FROM get_invoices_with_stays_ending($1::date)', [date.to_date])
 
-        visits << visit
+        invoices += res.map(&ROW_TO_INVOICE)
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from ending.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
+      end
+      
+      invoices
+    end
+  end
+
+  def self.get_reservations_for_invoice(db:, invoice_id:)
+    lambda do
+      reservations = []
+
+      begin
+        conn = PG::connect(db)
+
+        res = conn.exec_params('SELECT * FROM get_itinerary_for_invoice($1::integer)', [invoice_id.to_i])
+
+        reservations =+ ROWS_TO_RESERVATIONS.call(res)
+
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
       end
 
-    rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting visits from the database.\n#{e.message}"
-      raise
-    ensure
-      conn&.close
+      reservations
+    end
+  end
+
+  def self.get_lock_combinations_for_date(db:, facility_code:, date:)
+    lambda do
+      combinations = []
+
+      begin
+        conn = PG::connect(db)
+
+        res = conn.exec_params('SELECT * FROM get_lock_combinations_for_stay($1::text, $2::date)', [invoice_id.to_i])
+
+        combinations += res.map(&ROW_TO_COMBINATION)
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get lock combinations.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
+      end
+
+      combinations
+    end
+  end
+
+  def self.itineraries_from_delay(db:, delay:)
+    search_date = Date.today + delay.to_i
+
+    calls = []
+    itineraries = []
+
+    calls << get_invoices_with_stays_beginning(search_date) if delay.positive?
+    calls << get_invoices_with_stays_ending(search_date) if delay.negative?
+    calls += [get_invoices_with_stays_ending(search_date), get_invoices_with_stays_ending(search_date)] if delay.zero?
+
+    calls.each do |proc|
+      itineraries += proc.call
     end
 
-    visits
+    itineraries
   end
 
   def self.deliver_survey_email(db:, email:, log_email: false)
@@ -85,6 +154,16 @@ module Merlin
   private
 
   DATE_FORMAT = '%H:%M:%S %Y-%m-%d'.freeze
+
+  ROW_TO_INVOICE = proc { |row| Invoice.new(row['invoice_id'], row['contact_id'], row['contact_email_address']) }
+  ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], row['valid_from'], row['valid_to']) }
+  ROW_TO_BOOKING = proc { |row| Itinerary::Booking.new(row['stay_date'], row['no_users']) }
+  ROWS_TO_RESERVATIONS = proc do |rows|
+    grouped_bookings = rows.group_by { |row| Itinerary::Facility.new(row['facility_code'], row['facility_name']) }
+    grouped_bookings.map do |key, value|
+      Itinerary::Reservation.new(key, value.map(&ROW_TO_BOOKING))
+    end
+  end
 
   def self.log_email(db:, email:)
     begin
