@@ -92,63 +92,26 @@ module Merlin
     end
   end
 
-  def self.itineraries_from_delay(db:, delay:)
-    search_date = Date.today + delay.to_i
+  def self.get_itineraries_from_delay(db:, delay:)
+    lambda do
+      search_date = Date.today + delay.to_i
 
-    calls = []
-    itineraries = []
+      calls = []
+      invoices = []
+      itineraries = []
 
-    calls << get_invoices_with_stays_beginning(search_date) if delay.positive?
-    calls << get_invoices_with_stays_ending(search_date) if delay.negative?
-    calls += [get_invoices_with_stays_ending(search_date), get_invoices_with_stays_ending(search_date)] if delay.zero?
+      calls << get_invoices_with_stays_beginning(db: db, date: search_date) if delay.positive?
+      calls << get_invoices_with_stays_ending(db: db, date: search_date) if delay.negative?
+      calls += [get_invoices_with_stays_ending(db: db, date: search_date), get_invoices_with_stays_ending(db: db, date: search_date)] if delay.zero?
 
-    calls.each do |proc|
-      itineraries += proc.call
-    end
-
-    itineraries
-  end
-
-  def self.deliver_survey_email(db:, email:, log_email: false)
-    message = email.render
-
-    begin
-      message.deliver!
-
-      if message.bounced?
-        puts "Email to #{email.options.to} bounced at #{fnow} and may not be delivered."
-      else
-        puts "Email successfully delivered to #{email.options.to} at #{fnow}."
+      calls.each do |proc|
+        invoices += proc.call
       end
 
-      log_email(db: db, email: email) if log_email
-
-    rescue => e
-      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the email.\n#{e.message}"
-      raise
+      invoices.map do |invoice| 
+        Itinerary.new(guest: Guest.new(email: Guest::EmailAddress.new(invoice.contact_email_address)), reservations: get_reservations_for_invoice(db: db, invoice_id: invoice.id).call) 
+      end
     end
-  end
-
-  def self.email_for_visit(db:, email:)
-    record = nil
-    visit = email.data.visit
-
-    begin
-      conn = PG::connect(db)
-
-      res = conn.exec_params('SELECT * FROM get_hut_email_for_visit($1::varchar, $2::date, $3::varchar, $4::varchar)',
-                             [visit.guest.email, visit.end_date, visit.facility.code, email.options.template.name]
-                            )
-      hut_survey = res.first
-
-    rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting email from database.\n#{e.message}"
-      raise
-    ensure
-      conn&.close
-    end
-
-    record
   end
 
   private
