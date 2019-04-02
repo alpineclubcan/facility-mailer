@@ -58,7 +58,7 @@ module Merlin
 
         res = conn.exec_params('SELECT * FROM get_itinerary_for_invoice($1::integer)', [invoice_id.to_i])
 
-        reservations =+ ROWS_TO_RESERVATIONS.call(res)
+        reservations += ROWS_TO_RESERVATIONS.call(res)
 
       rescue PG::Error => e
         puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
