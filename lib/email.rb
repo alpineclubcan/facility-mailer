@@ -13,9 +13,9 @@ class Email
 
   attr_reader :options, :data
 
-  def initialize(options: {}.to_dot, data: {}.to_dot)
-    @options = options
-    @data = data
+  def initialize(options: {}, data: {})
+    @options = options.to_dot
+    @data = data.to_dot
     freeze
   end
 

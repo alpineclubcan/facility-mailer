@@ -55,18 +55,12 @@ CONFIG.sending_options.each do |option|
   next if option.fetch('skip', false) 
 
   email_template = Email::Template.new(option.template, template(name: option.template, format: :html), template(name: option.template, format: :txt))
-  visits = Merlin::visits_from_days(db: CONFIG.db, delay: option.delay)
+  itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay)
 
-  emails = visits.map { |visit| Email.new(options: { to: visit.guest.email.to_s, subject: option.subject, template: email_template }.to_dot, data: { visit: visit, facility: FACILITIES.select { |val| val.code == visit.facility.code } }.to_dot) }
+  emails = itineraries.map { |visit| Email.new(options: { to: visit.guest.email.to_s, subject: option.subject, template: email_template }, data: { visit: visit, facility: FACILITIES.select { |val| val.code == visit.facility.code } }) }
 
   emails.each do |email|
-    if Merlin::email_for_visit(db: CONFIG.db, email: email)
-      puts 'Email skipped because one has already been sent.'
-      next
-    end
-
-    Merlin::deliver_survey_email(db: CONFIG.db, email: email, log_email: production?)
-
+    # Deliver the emails
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
