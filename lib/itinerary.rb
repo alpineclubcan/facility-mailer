@@ -16,6 +16,18 @@ class Itinerary
       dates.each_cons(2).map { |earlier, later| (later - earlier).to_i.abs }.uniq == [1]
     end
 
+    def first_night
+      bookings.min_by { |booking| booking.date }.date
+    end
+
+    def last_night
+      bookings.max_by { |booking| booking.date }.date
+    end
+
+    def departure_date
+      last_night + 1
+    end
+
     def to_reservation
       self
     end
