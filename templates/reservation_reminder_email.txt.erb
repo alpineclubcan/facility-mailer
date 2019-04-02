@@ -5,6 +5,8 @@ Your reservation details:
 --------------------
 <% itinerary.reservations.each do |reservation| %>
 
+<% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
+
 The <%= reservation.facility.name %>
 
 <% if reservation.congruent? && reservation.continuous? %>
@@ -23,7 +25,7 @@ Breakdown of your visit:
 
 <% end %>
 
-View The <%= reservation.facility.name %> at <%= 'link here' %>
+View The <%= reservation.facility.name %> at <%= facility_info.link %>
 
 --------------------
 <% end %>
