@@ -119,34 +119,18 @@ module Merlin
   DATE_FORMAT = '%H:%M:%S %Y-%m-%d'.freeze
 
   ROW_TO_INVOICE = proc { |row| Invoice.new(row['invoice_id'], row['contact_id'], row['contact_email_address']) }
+
   ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], row['valid_from'], row['valid_to']) }
+
   ROW_TO_BOOKING = proc { |row| Itinerary::Booking.new(row['stay_date'], row['no_users']) }
+
   ROWS_TO_RESERVATIONS = proc do |rows|
+
     grouped_bookings = rows.group_by { |row| Itinerary::Facility.new(row['facility_code'], row['facility_name']) }
     grouped_bookings.map do |key, value|
       Itinerary::Reservation.new(key, value.map(&ROW_TO_BOOKING))
     end
-  end
 
-  def self.log_email(db:, email:)
-    begin
-      conn = PG::connect(db)
-
-      visit = email.data.visit
-      
-      res = conn.exec_params(
-        'INSERT INTO public.hut_email(reservation_id, email, end_date, facility_code, date_sent, template) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date, $6::varchar)', 
-        [visit.reservation_id, visit.guest.email, visit.end_date, visit.facility.code, Date::today, email.options.template.name]
-      )
-
-      puts "Email logged for #{email.options.to} at #{fnow}."
-
-    rescue PG::Error => e  
-      puts "An error of type #{e.class} occurred at #{fnow} while logging survey to the database."
-      
-    ensure
-      conn&.close
-    end
   end
 
   def self.fnow
