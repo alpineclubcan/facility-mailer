@@ -1,0 +1,42 @@
+# Example configuration file for survey mailer
+#
+# This file is the base for all configuration settings.
+# 
+# Note: SMTP delivery is setup to use mailcatcher(see https://mailcatcher.me/)
+# defaults in the test and development environments.
+# 
+# Usage:
+#
+# Copy this file from `config/config.defaults.yml` to `config/config.yml`
+#
+
+test:
+    smtp:
+        host: localhost
+        port: 1025
+        user: ''
+        password: ''
+
+    template:
+        text: templates/hut_survey_email.txt.erb
+        html: templates/hut_survey_email.html.erb
+
+    sending_options:
+        delay: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
+
+development:
+    smtp:
+        host: localhost
+        port: 1025
+        user: ''
+        password: ''
+
+    template:
+        text: templates/hut_survey_email.txt.erb
+        html: templates/hut_survey_email.html.erb
+
+    sending_options:
+        delay: 2 # Delay in days. When 2, send emails for visits ending 2 days ago
+
+production:
+

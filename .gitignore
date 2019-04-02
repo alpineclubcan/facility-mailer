@@ -53,5 +53,9 @@ build-iPhoneSimulator/
 *.swp
 *.swo
 
-# Mac Stuff
+## Mac Stuff
 .DS_Store
+
+## Specific to this application
+/config/config.yml
+
