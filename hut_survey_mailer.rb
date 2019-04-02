@@ -57,10 +57,12 @@ CONFIG.sending_options.each do |option|
   email_template = Email::Template.new(option.template, template(name: option.template, format: :html), template(name: option.template, format: :txt))
   itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay)
 
-  emails = itineraries.map { |visit| Email.new(options: { to: visit.guest.email.to_s, subject: option.subject, template: email_template }, data: { visit: visit, facility: FACILITIES.select { |val| val.code == visit.facility.code } }) }
+  emails = itineraries.map do |itinerary| 
+    Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary }) 
+  end
 
   emails.each do |email|
-    # Deliver the emails
+    # Deliver the email
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
