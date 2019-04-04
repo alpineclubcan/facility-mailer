@@ -118,11 +118,11 @@ module Merlin
 
   DATE_FORMAT = '%H:%M:%S %Y-%m-%d'.freeze
 
-  ROW_TO_INVOICE = proc { |row| Invoice.new(row['invoice_id'], row['contact_id'], row['contact_email_address']) }
+  ROW_TO_INVOICE = proc { |row| Invoice.new(row['invoice_id'].to_i, row['contact_id'].to_i, row['contact_email_address']) }
 
-  ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], row['valid_from'], row['valid_to']) }
+  ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], Date.parse(row['valid_from']), Date.parse(row['valid_to'])) }
 
-  ROW_TO_BOOKING = proc { |row| Itinerary::Booking.new(row['stay_date'], row['no_users']) }
+  ROW_TO_BOOKING = proc { |row| Itinerary::Booking.new(Date.parse(row['stay_date']), row['no_users'].to_i) }
 
   ROWS_TO_RESERVATIONS = proc do |rows|
 
