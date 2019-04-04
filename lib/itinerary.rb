@@ -8,31 +8,39 @@ class Itinerary
 
   Reservation = Struct.new(:facility, :bookings) do
     def congruent?
-      bookings.map { |booking| booking.number_of_users }.uniq.length == 1
+      group_sizes.uniq.length == 1
     end
 
     def continuous?
       return true if bookings.length == 1
 
-      dates = bookings.map { |booking| booking.date }.sort
+      dates = bookings.map(&BY_DATE).sort
       dates.each_cons(2).map { |earlier, later| (later - earlier).to_i.abs }.uniq == [1]
     end
 
     def first_night
-      bookings.min_by { |booking| booking.date }.date
+      bookings.min_by(&BY_DATE).date
     end
 
     def last_night
-      bookings.max_by { |booking| booking.date }.date
+      bookings.max_by(&BY_DATE).date
     end
 
     def departure_date
       last_night + 1
     end
 
+    def group_sizes
+      bookings.sort_by(&BY_DATE).map { |booking| booking.number_of_users }
+    end
+
     def to_reservation
       self
     end
+
+    private
+
+    BY_DATE = proc { |booking| booking.date }
   end
 
   Booking = Struct.new(:date, :number_of_users) do

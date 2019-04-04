@@ -91,5 +91,29 @@ describe '#continuous?' do
     end
   end
 
+  describe '#group_sizes' do
+    context 'when there is one booking' do
+      it 'returns an array of one with the correct group size' do
+        reservation = Itinerary::Reservation.new(facility, [Itinerary::Booking.new(Date.today, 3)])
+
+        expect(reservation.group_sizes).to eq([3])
+      end
+    end
+
+    context 'when there is more than one booking' do
+      it 'returns correct array for different size groups' do
+        reservation = Itinerary::Reservation.new(facility, [Itinerary::Booking.new(Date.today, 3), Itinerary::Booking.new(Date.today + 1, 2)])
+
+        expect(reservation.group_sizes).to eq([3, 2])
+      end
+
+      it 'returns correct array for same size groups' do
+        reservation = Itinerary::Reservation.new(facility, [Itinerary::Booking.new(Date.today, 3), Itinerary::Booking.new(Date.today + 1, 3)])
+
+        expect(reservation.group_sizes).to eq([3, 3])
+      end
+    end
+  end
+
 end
 
