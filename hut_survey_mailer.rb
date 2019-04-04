@@ -55,15 +55,15 @@ CONFIG.sending_options.each do |option|
   next if option.fetch('skip', false) 
 
   email_template = Email::Template.new(option.template, template(name: option.template, format: :html), template(name: option.template, format: :txt))
-  itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay)
+  itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay).call
 
   emails = itineraries.map do |itinerary| 
     Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES }) 
   end
 
   emails.each do |email|
-    # Deliver the email
-    # Log the email
+    message = email.render
+    message.deliver
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
