@@ -12,6 +12,8 @@ class Itinerary
     end
 
     def continuous?
+      return true if bookings.length == 1
+
       dates = bookings.map { |booking| booking.date }.sort
       dates.each_cons(2).map { |earlier, later| (later - earlier).to_i.abs }.uniq == [1]
     end
