@@ -6,7 +6,7 @@ Your reservation details:
 <% itinerary.reservations.each do |reservation| %> <% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
 The <%= reservation.facility.name %>
 <% if reservation.congruent? && reservation.continuous? %>
-You have scheduled a visit to The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.departure_date %>.
+  You have scheduled <%= reservation.group_sizes.uniq == [1] ? 'a visit to' : "a group of #{reservation.group_sizes.first} to visit" %> The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.departure_date %>.
 <% else %>
 Breakdown of your visit:
   <% reservation.bookings.each do |booking| %>
