@@ -3,32 +3,19 @@ Greetings from The Alpine Club of Canada! A friendly reminder for your upcoming 
 Your reservation details:
 
 --------------------
-<% itinerary.reservations.each do |reservation| %>
-
-<% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
-
+<% itinerary.reservations.each do |reservation| %> <% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
 The <%= reservation.facility.name %>
-
 <% if reservation.congruent? && reservation.continuous? %>
-
-You have scheduled a group of <%= 'group size' %> to visit The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.last_night %>.
-
+You have scheduled a visit to The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.departure_date %>.
 <% else %>
-
 Breakdown of your visit:
-
   <% reservation.bookings.each do |booking| %>
-
-    <%= booking.date %> for <%= booking.number_of_users %> <%= booking.number_of_users > 1 ? 'people' : 'person' %>
-
+    - <%= booking.date %> for <%= booking.number_of_users %> <%= booking.number_of_users > 1 ? 'people' : 'person' %>
   <% end %>
-
 <% end %>
-
 View The <%= reservation.facility.name %> at <%= facility_info.link %>
 
 --------------------
 <% end %>
-
 Please refer to our cancellation policy at https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Booking_Huts.aspx#cancellation.
 If you need to make a cancellation, contact the front desk at info@alpineclubofcanada.ca or (403) 678-3200.
