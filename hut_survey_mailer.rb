@@ -25,17 +25,16 @@ require 'yaml'
 
 # Local requires
 require Pathname(__dir__).join('merlin.rb')
-require Pathname(__dir__).join('lib', 'survey_email.rb')
+require Pathname(__dir__).join('lib', 'email.rb')
 
 CONFIG_PATH = Pathname(__dir__).join('config', 'config.yml')
+FACILITIES_PATH = Pathname(__dir__).join('config', 'facilities.yml')
+TEMPLATES_DIR = Pathname(__dir__).join('templates')
 
 ENVIRONMENT = ENV['MAILER_ENV'] || 'development'
 CONFIG = YAML.load_file(CONFIG_PATH)[ENVIRONMENT].to_dot
 
-HTML_TEMPLATE_PATH = Pathname(__dir__).join(CONFIG.template.html)
-TEXT_TEMPLATE_PATH = Pathname(__dir__).join(CONFIG.template.text)
-
-EMAIL_TEMPLATE = SurveyEmail::Template.new(File.read(HTML_TEMPLATE_PATH), File.read(TEXT_TEMPLATE_PATH))
+FACILITIES = YAML.load_file(FACILITIES_PATH).to_dot.list
 
 Mail.defaults do
   delivery_method :smtp, { address: CONFIG.smtp.host,
@@ -44,20 +43,30 @@ Mail.defaults do
                            password: CONFIG.smtp.password }
 end
 
-visits = Merlin::visits_from_days(db: CONFIG.db, delay: CONFIG.sending_options.delay)
+def production?
+  ENVIRONMENT == 'production'
+end
 
-emails = visits.map { |visit| SurveyEmail.new(visit: visit, template: EMAIL_TEMPLATE) }
+def template(name:, format:)
+  File.read("#{TEMPLATES_DIR}/#{name}.#{format.to_s}.erb")
+end
 
-puts "No visits were found ending on #{Date::today - CONFIG.sending_options.delay}." if emails.empty?
+CONFIG.sending_options.each do |option|
+  next if option.fetch('skip', false) 
 
-emails.each do |email|
+  email_template = Email::Template.new(option.template, template(name: option.template, format: :html), template(name: option.template, format: :txt))
+  itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay).call
 
-  if Merlin::hut_survey_for_visit(db: CONFIG.db, email: email)
-    puts 'Email skipped because hut survey already exists.'
-    next
+  emails = itineraries.map do |itinerary| 
+      Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
   end
 
-  Merlin::deliver_survey_email(db: CONFIG.db, email: email)
+  emails.each do |email|
+    message = email.render
+    message.deliver
+  end
+
+  puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
 
 end
 

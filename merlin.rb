@@ -1,106 +1,136 @@
 # Hide fugly procedural database access code in here!
 
 require Pathname(__dir__).join('lib', 'guest.rb')
-require Pathname(__dir__).join('lib', 'visit.rb')
+require Pathname(__dir__).join('lib', 'itinerary.rb')
 
 module Merlin
-  def self.visits_from_days(db:, delay:)
-    visits = []
+  Invoice = Struct.new(:id, :contact_id, :contact_email_address)
+  LockCombination = Struct.new(:value, :valid_from, :valid_to)
 
-    begin
-      conn = PG::connect(db)
+  def self.get_invoices_with_stays_beginning(db:, date:)
+    lambda do
+      invoices = []
 
-      res = conn.exec_params("SELECT * FROM get_visits_from_days($1::integer)",
-                             [delay.to_i]
-                            )
+      begin
+        conn = PG::connect(db)
 
-      res.each do |row|
-        facility = Visit::Facility.new(row['facility_code'], row['facility_name'])
+        res = conn.exec_params('SELECT * FROM get_invoices_with_stays_beginning($1::date)', [date.to_date])
 
-        email = Guest::EmailAddress.new(row['email_address'])
-
-        guest = Guest.new(name: Guest::EmptyName.new, email: email)
-        visit = Visit.new(reservation_id: row['reservation_id'].to_i, facility: facility, guest: guest, start_date: Date.parse(row['start_date']), number_of_nights: row['number_of_nights'])
-
-        visits << visit
+        invoices += res.map(&ROW_TO_INVOICE)
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from beginning.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
       end
-
-    rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting visits from the database."
-
-    ensure
-      conn&.close
-    end
-
-    visits
-  end
-
-
-  def self.deliver_survey_email(db:, email:)
-    message = email.render
-
-    begin
-      message.deliver!
-
-      if message.bounced?
-        puts "Email to #{email.visit.guest.email} bounced at #{fnow} and may not be delivered."
-      else
-        puts "Email successfully delivered to #{email.visit.guest.email} at #{fnow}."
-      end
-
-      log_email_for_visit(db: db, email: email)
-
-    rescue => e
-      puts "An error of type #{e.class} occurred at #{fnow} while attempting to deliver the survey email.\n#{e.backtrace}"
-      raise
+       
+      invoices
     end
   end
 
-  def self.hut_survey_for_visit(db:, email:)
-    hut_survey = nil
-    visit = email.visit
+  def self.get_invoices_with_stays_ending(db:, date:)
+    lambda do
+      invoices = []
 
-    begin
-      conn = PG::connect(db)
+      begin
+        conn = PG::connect(db)
 
-      res = conn.exec_params('SELECT * FROM get_hut_survey_for_visit($1::varchar, $2::date, $3::varchar)',
-                             [visit.guest.email, visit.end_date, visit.facility.code]
-                            )
-      hut_survey = res.first
+        res = conn.exec_params('SELECT * FROM get_invoices_with_stays_ending($1::date)', [date.to_date])
 
-    rescue PG::Error => e
-      puts "An error of type #{e.class} occurred at #{fnow} while getting hut survey from database."
-
-    ensure
-      conn&.close
+        invoices += res.map(&ROW_TO_INVOICE)
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from ending.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
+      end
+      
+      invoices
     end
+  end
 
-    hut_survey
+  def self.get_reservations_for_invoice(db:, invoice_id:)
+    lambda do
+      reservations = []
+
+      begin
+        conn = PG::connect(db)
+
+        res = conn.exec_params('SELECT * FROM get_itinerary_for_invoice($1::integer)', [invoice_id.to_i])
+
+        reservations += ROWS_TO_RESERVATIONS.call(res)
+
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
+      end
+
+      reservations
+    end
+  end
+
+  def self.get_lock_combinations_for_date
+    proc do |db, facility_code, date|
+      combinations = []
+
+      begin
+        conn = PG::connect(db)
+
+        res = conn.exec_params('SELECT * FROM get_lock_combinations_for_stay($1::text, $2::date)', [facility_code, date])
+
+        combinations += res.map(&ROW_TO_COMBINATION)
+      rescue PG::Error => e
+        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get lock combinations.\n#{e.message}"
+        raise
+      ensure
+        conn&.close
+      end
+
+      combinations
+    end
+  end
+
+  def self.get_itineraries_from_delay(db:, delay:)
+    lambda do
+      search_date = Date.today + delay.to_i
+
+      calls = []
+      invoices = []
+      itineraries = []
+
+      calls << get_invoices_with_stays_beginning(db: db, date: search_date) if delay.positive?
+      calls << get_invoices_with_stays_ending(db: db, date: search_date) if delay.negative?
+      calls += [get_invoices_with_stays_ending(db: db, date: search_date), get_invoices_with_stays_ending(db: db, date: search_date)] if delay.zero?
+
+      calls.each do |proc|
+        invoices += proc.call
+      end
+
+      invoices.map do |invoice| 
+        Itinerary.new(guest: Guest.new(email: Guest::EmailAddress.new(invoice.contact_email_address)), reservations: get_reservations_for_invoice(db: db, invoice_id: invoice.id).call) 
+      end
+    end
   end
 
   private
 
   DATE_FORMAT = '%H:%M:%S %Y-%m-%d'.freeze
 
-  def self.log_email_for_visit(db:, email:)
-    begin
-      conn = PG::connect(db)
+  ROW_TO_INVOICE = proc { |row| Invoice.new(row['invoice_id'].to_i, row['contact_id'].to_i, row['contact_email_address']) }
 
-      visit = email.visit
-      
-      res = conn.exec_params(
-        'INSERT INTO public.hut_survey(reservation_id, email, end_date, facility_code, date_sent) VALUES($1::integer, $2::varchar, $3::date, $4::varchar, $5::date)', 
-        [visit.reservation_id, visit.guest.email, visit.end_date, visit.facility.code, Date::today]
-      )
+  ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], Date.parse(row['valid_from']), Date.parse(row['valid_until'])) } 
 
-      puts "Email logged for #{email.visit.guest.email} at #{fnow}."
+  ROW_TO_BOOKING = proc { |row| Itinerary::Booking.new(Date.parse(row['stay_date']), row['no_users'].to_i) }
 
-    rescue PG::Error => e  
-      puts "An error of type #{e.class} occurred at #{fnow} while logging survey to the database."
-      
-    ensure
-      conn&.close
+  ROWS_TO_RESERVATIONS = proc do |rows|
+
+    grouped_bookings = rows.group_by { |row| Itinerary::Facility.new(row['facility_code'], row['facility_name']) }
+    grouped_bookings.map do |key, value|
+      Itinerary::Reservation.new(key, value.map(&ROW_TO_BOOKING))
     end
+
   end
 
   def self.fnow

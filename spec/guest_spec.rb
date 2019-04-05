@@ -1,10 +1,11 @@
 require 'guest'
 
 describe Guest do
-  NAME = Guest::IndividualName.new("Joan", "OfArc")
-  EMAIL_ADDRESS = Guest::EmailAddress.new("death.by.sword@gmail.com")
+  name = Guest::IndividualName.new("Joan", "OfArc")
+  email_address = Guest::EmailAddress.new("death.by.sword@gmail.com")
 
-  subject { Guest.new(name: NAME, email: EMAIL_ADDRESS) }
+  subject { Guest.new(name: name, email: email_address) }
+
 
   it "responds to messages" do
     expect(subject).to respond_to(:name)
@@ -17,8 +18,8 @@ describe Guest do
     end
 
     it "correctly sets attributes accessed by messages" do
-      expect(subject.name).to eq(NAME)
-      expect(subject.email).to eq(EMAIL_ADDRESS)
+      expect(subject.name).to eq(name)
+      expect(subject.email).to eq(email_address)
     end
 
     it "results in a frozen object" do
