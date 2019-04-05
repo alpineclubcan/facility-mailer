@@ -2,7 +2,7 @@ list:
     -
         code: '5040'
         blurb: "ACC’s most westerly hut provides access to extensive summer alpine hiking and challenging winter skiing in the heart of Vancouver Island."
-        link: http://bit.ly/2CzHHvN 
+        link: http://bit.ly/5040-hut 
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/34-5040-Peak-Hut-tn.jpg 
     -
         code: ABBOT
@@ -22,7 +22,7 @@ list:
     -
         code: BALFOUR
         blurb: "Used for traverses of the Wapta Icefields in summer and winter. (Avalanche terrain, glacier travel required)."
-        link: http://bit.ly/2EFSuXA
+        link: http://bit.ly/balfour-hut
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/12-Balfour-tn.jpg
     -
         code: BELL
@@ -32,7 +32,7 @@ list:
     -
         code: BOSWELL
         blurb: "Private family rooms in a separate self-contained cabin on the Clubhouse property in Canmore. Accommodates up to four families of three to four people. Free Wi-Fi."
-        link: http://bit.ly/2nU27bC
+        link: http://bit.ly/boswell-cabin
         image: https://www.alpineclubofcanada.ca/web/images/ACC/Huts/Home/TN/2-Boswell-Cabin-tn.jpg
         serviced: true
     -
@@ -59,7 +59,7 @@ list:
     -
         code: CH
         blurb: "31-person hostel with dorm-style accommodation a short drive from Canmore. Great access to all town recreation and amenities. Free Wi-Fi. No smoking on the premises."
-        link: http://bit.ly/2EndJtU
+        link: http://bit.ly/canmore-clubhouse
         image: https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/Home/TN/1-Clubhouse-new-tn1.jpg
         serviced: true
     -
