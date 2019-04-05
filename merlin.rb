@@ -71,14 +71,14 @@ module Merlin
     end
   end
 
-  def self.get_lock_combinations_for_date(db:, facility_code:, date:)
-    lambda do
+  def self.get_lock_combinations_for_date
+    proc do |db, facility_code, date|
       combinations = []
 
       begin
         conn = PG::connect(db)
 
-        res = conn.exec_params('SELECT * FROM get_lock_combinations_for_stay($1::text, $2::date)', [invoice_id.to_i])
+        res = conn.exec_params('SELECT * FROM get_lock_combinations_for_stay($1::text, $2::date)', [facility_code, date])
 
         combinations += res.map(&ROW_TO_COMBINATION)
       rescue PG::Error => e
