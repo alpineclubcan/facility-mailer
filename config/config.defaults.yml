@@ -1,0 +1,81 @@
+# Example configuration file for survey mailer
+#
+# This file is the base for all configuration settings.
+# 
+# Note: SMTP delivery is setup to use mailcatcher(see https://mailcatcher.me/)
+# defaults in the test and development environments.
+# 
+# Usage:
+#
+# Copy this file from `config/config.defaults.yml` to `config/config.yml`
+#
+
+test:
+    smtp:
+        host: localhost
+        port: 1025
+        user: ''
+        password: ''
+
+    db:
+        host: localhost 
+        dbname: db_name
+        port: 5432
+        user: username
+        password: password
+
+    sending_options:
+        - delay: -2
+          subject: Thank you for staying with us!
+          template: hut_survey_email
+        - delay: 5
+          subject: Don't forget about your upcoming reservation!
+          template: reservation_reminder_email
+          skip: true
+
+development:
+    smtp:
+        host: localhost
+        port: 1025
+        user: ''
+        password: ''
+
+    db:
+        host: localhost 
+        dbname: db_name
+        port: 5432
+        user: username
+        password: password
+
+    sending_options:
+        - delay: -2
+          subject: Thank you for staying with us!
+          template: hut_survey_email
+        - delay: 5
+          subject: Don't forget about your upcoming reservation!
+          template: reservation_reminder_email
+          skip: true
+
+production:
+    smtp:
+        host: localhost
+        port: 1025
+        user: ''
+        password: ''
+
+    db:
+        host: localhost 
+        dbname: db_name
+        port: 5432
+        user: username
+        password: password
+
+    sending_options:
+        - delay: -2
+          subject: Thank you for staying with us!
+          template: hut_survey_email
+        - delay: 5
+          subject: Don't forget about your upcoming reservation!
+          template: reservation_reminder_email
+          skip: true
+
