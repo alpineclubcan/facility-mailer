@@ -3,32 +3,19 @@ Greetings from The Alpine Club of Canada! A friendly reminder for your upcoming 
 Your reservation details:
 
 --------------------
-
-Castle Hut
- 
-You have scheduled a group of 4 to visit Castle Hut between 10-05-19 and 15-05-19.
-
-Lock combination for your visit:
-
-40-30-5
-
-View The Castle Hut at https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Castle_Mountain_Hut.aspx
-
---------------------
-
-Canmore Clubhouse
- 
-You are scheduled to visit Canmore Clubhouse between 15-05-19 and 17-05-19.
-
+<% itinerary.reservations.each do |reservation| %> <% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
+The <%= reservation.facility.name %>
+<% if reservation.congruent? && reservation.continuous? %>
+  You have scheduled <%= reservation.group_sizes.uniq == [1] ? 'a visit to' : "a group of #{reservation.group_sizes.first} to visit" %> The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.departure_date %>.
+<% else %>
 Breakdown of your visit:
-
-15-05-19 for 3 people
-
-16-05-19 for 1 person
-
-View The Canmore Clubhouse at https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Canmore_Clubhouse.aspx
+  <% reservation.bookings.each do |booking| %>
+    - <%= booking.date %> for <%= booking.number_of_users %> <%= booking.number_of_users > 1 ? 'people' : 'person' %>
+  <% end %>
+<% end %>
+View The <%= reservation.facility.name %> at <%= facility_info.link %>
 
 --------------------
-
+<% end %>
 Please refer to our cancellation policy at https://www.alpineclubofcanada.ca/web/ACCMember/Huts/Booking_Huts.aspx#cancellation.
 If you need to make a cancellation, contact the front desk at info@alpineclubofcanada.ca or (403) 678-3200.

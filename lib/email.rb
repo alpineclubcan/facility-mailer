@@ -13,9 +13,9 @@ class Email
 
   attr_reader :options, :data
 
-  def initialize(options: {}.to_dot, data: {}.to_dot)
-    @options = options
-    @data = data
+  def initialize(options: {}, data: {})
+    @options = options.to_dot
+    @data = data.to_dot
     freeze
   end
 
@@ -27,12 +27,12 @@ class Email
 
       m.text_part do |msg| 
         msg.content_type CONTENT_TYPE_TEXT
-        msg.body ERB.new(options.template.text).result_with_hash(data) 
+        msg.body ERB.new(options.template.text, nil, '-').result_with_hash(data) 
       end
 
       m.html_part do |msg| 
         msg.content_type = CONTENT_TYPE_HTML
-        msg.body ERB.new(options.template.html).result_with_hash(data)
+        msg.body ERB.new(options.template.html, nil, '-').result_with_hash(data)
       end 
     end
   end
