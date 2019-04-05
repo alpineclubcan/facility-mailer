@@ -120,7 +120,7 @@ module Merlin
 
   ROW_TO_INVOICE = proc { |row| Invoice.new(row['invoice_id'].to_i, row['contact_id'].to_i, row['contact_email_address']) }
 
-  ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], Date.parse(row['valid_from']), Date.parse(row['valid_to'])) }
+  ROW_TO_COMBINATION = proc { |row| LockCombination.new(row['combination'], Date.parse(row['valid_from']), Date.parse(row['valid_until'])) } 
 
   ROW_TO_BOOKING = proc { |row| Itinerary::Booking.new(Date.parse(row['stay_date']), row['no_users'].to_i) }
 
