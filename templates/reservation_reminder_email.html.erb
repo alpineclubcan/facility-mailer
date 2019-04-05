@@ -460,6 +460,8 @@
 </div>
 </div>
 </div>
+<% itinerary.reservations.sort_by { |res| res.first_night }.each do |reservation| %>
+<% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
 <div style="background-color:#f3f3f3;">
 <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 605px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;;">
 <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
@@ -473,107 +475,36 @@
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 30px; padding-left: 30px; padding-top: 10px; padding-bottom: 5px; font-family: Georgia, 'Times New Roman', serif"><![endif]-->
 <div style="color:#134C75;font-family:'Bitter', Georgia, Times, 'Times New Roman', serif;line-height:120%;padding-top:10px;padding-right:30px;padding-bottom:5px;padding-left:30px;">
 <div style="font-size: 12px; line-height: 14px; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; color: #134C75;">
-<p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;"><span style="font-size: 24px;"><strong>Castle Hut</strong></span></p>
+    <p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;"><span style="font-size: 24px;"><strong><%= reservation.facility.name %></strong></span></p>
 </div>
 </div>
 <!--[if mso]></td></tr></table><![endif]-->
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 60px; padding-left: 60px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
 <div style="color:#555555;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:120%;padding-top:10px;padding-right:60px;padding-bottom:10px;padding-left:60px;">
 <div style="font-size: 12px; line-height: 14px; color: #555555; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 12px; text-align: center; margin: 0;"><span style="font-size: 10px;"><span style="line-height: 12px; font-size: 10px;">Technical climbing approach to a 6-person hut on Goat Plateau, half-way up Castle Mountain in Banff National Park. Closed in winte</span>r.</span></p>
+    <p style="font-size: 14px; line-height: 12px; text-align: center; margin: 0;"><span style="font-size: 10px;"><span style="line-height: 12px; font-size: 10px;"><%= facility_info.blurb %></span>r.</span></p>
 </div>
 </div>
 <!--[if mso]></td></tr></table><![endif]-->
 <div align="center" class="img-container center autowidth" style="padding-right: 10px;padding-left: 10px;">
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 10px;padding-left: 10px;" align="center"><![endif]-->
-<div style="font-size:1px;line-height:10px"> </div><img align="center" alt="Image" border="0" class="center autowidth" src="https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/CASTLE/Gallery/CASTLE-gallery1.jpg" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; border: 0; height: auto; float: none; width: 100%; max-width: 219px; display: block;" title="Image" width="219"/>
+<div style="font-size:1px;line-height:10px"> </div><img align="center" alt="<%= reservation.facility.name %>" border="0" class="center autowidth" src="<%= facility_info.image %>" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; border: 0; height: auto; float: none; width: 100%; max-width: 219px; display: block;" title="<%= reservation.facility.name %>" width="219"/>
 <div style="font-size:1px;line-height:10px"> </div>
 <!--[if mso]></td></tr></table><![endif]-->
 </div>
+<% if reservation.continuous? && reservation.congruent? %>
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 30px; padding-left: 30px; padding-top: 10px; padding-bottom: 20px; font-family: Arial, sans-serif"><![endif]-->
 <div style="color:#7E7E7E;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:150%;padding-top:10px;padding-right:30px;padding-bottom:20px;padding-left:30px;">
 <div style="font-size: 12px; line-height: 18px; color: #7E7E7E; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 14px; line-height: 21px;">You have scheduled a <strong><span style="color: #134c75; font-size: 14px; line-height: 21px;">group of 4</span></strong> to visit <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong>Castle Hut</strong></span> between <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong>10-05-19</strong></span> and <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong>15-05-19<span style="color: #7e7e7e; line-height: 21px; font-size: 14px;">.</span></strong></span></span></p>
+    <p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 14px; line-height: 21px;">You have scheduled <%= reservation.group_sizes.uniq == [1] ? 'a visit to' : "a <strong><span style=\"color: #134c75; font-size: 14px; line-height: 21px;\">group of #{reservation.group_sizes.first}</span></strong> to visit" %> <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong><%= "The #{reservation.facility.name}" %></strong></span> between <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong><%= reservation.first_night %></strong></span> and <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong><%= reservation.departure_date %></strong></span></span></p>
 </div>
 </div>
 <!--[if mso]></td></tr></table><![endif]-->
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 5px; padding-bottom: 5px; font-family: Arial, sans-serif"><![endif]-->
-<div style="color:#134c75;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:120%;padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px;">
-<div style="font-size: 12px; line-height: 14px; color: #134c75; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 16px; text-align: center; margin: 0;"><strong><span style="font-size: 16px; line-height: 19px;">Lock combination for your visit:</span></strong></p>
-</div>
-</div>
-<!--[if mso]></td></tr></table><![endif]-->
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 5px; padding-bottom: 5px; font-family: Arial, sans-serif"><![endif]-->
-<div style="color:#134c75;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:200%;padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px;">
-<div style="font-size: 12px; line-height: 24px; color: #134c75; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;">40-30-5</p>
-</div>
-</div>
-<!--[if mso]></td></tr></table><![endif]-->
-<div align="center" class="button-container" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"><tr><td style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://bit.ly/2nU27bC" style="height:25.5pt; width:120.75pt; v-text-anchor:middle;" arcsize="71%" stroke="false" fillcolor="#49a6e8"><w:anchorlock/><v:textbox inset="0,0,0,0"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:12px"><![endif]--><a href="http://bit.ly/2nU27bC" style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #49a6e8; border-radius: 24px; -webkit-border-radius: 24px; -moz-border-radius: 24px; width: auto; width: auto; border-top: 1px solid #49a6e8; border-right: 1px solid #49a6e8; border-bottom: 1px solid #49a6e8; border-left: 1px solid #49a6e8; padding-top: 5px; padding-bottom: 5px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;" target="_blank"><span style="padding-left:25px;padding-right:25px;font-size:12px;display:inline-block;"><span style="font-size: 12px; line-height: 24px;">VIEW CASTLE HUT</span></span></a>
-<!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->
-</div>
-<table border="0" cellpadding="0" cellspacing="0" class="divider" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top" width="100%">
-<tbody>
-<tr style="vertical-align: top;" valign="top">
-<td class="divider_inner" style="word-break: break-word; vertical-align: top; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px; border-collapse: collapse;" valign="top">
-<table align="center" border="0" cellpadding="0" cellspacing="0" class="divider_content" height="0" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; border-top: 1px solid #BBBBBB; height: 0px;" valign="top" width="100%">
-<tbody>
-<tr style="vertical-align: top;" valign="top">
-<td height="0" style="word-break: break-word; vertical-align: top; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%; border-collapse: collapse;" valign="top"><span></span></td>
-</tr>
-</tbody>
-</table>
-</td>
-</tr>
-</tbody>
-</table>
-<!--[if (!mso)&(!IE)]><!-->
-</div>
-<!--<![endif]-->
-</div>
-</div>
-<!--[if (mso)|(IE)]></td></tr></table><![endif]-->
-<!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
-</div>
-</div>
-</div>
-<div style="background-color:#f3f3f3;">
-<div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 605px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: transparent;;">
-<div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-<!--[if (mso)|(IE)]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f3f3f3;"><tr><td align="center"><table cellpadding="0" cellspacing="0" border="0" style="width:605px"><tr class="layout-full-width" style="background-color:transparent"><![endif]-->
-<!--[if (mso)|(IE)]><td align="center" width="605" style="background-color:transparent;width:605px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;" valign="top"><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top:0px; padding-bottom:0px;background-color:#FFFFFF;"><![endif]-->
-<div class="col num12" style="min-width: 320px; max-width: 605px; display: table-cell; vertical-align: top;;">
-<div style="background-color:#FFFFFF;width:100% !important;">
-<!--[if (!mso)&(!IE)]><!-->
-<div style="border-top:0px solid transparent; border-left:0px solid transparent; border-bottom:0px solid transparent; border-right:0px solid transparent; padding-top:0px; padding-bottom:0px; padding-right: 10px; padding-left: 10px;">
-<!--<![endif]-->
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 30px; padding-left: 30px; padding-top: 10px; padding-bottom: 5px; font-family: Georgia, 'Times New Roman', serif"><![endif]-->
-<div style="color:#134C75;font-family:'Bitter', Georgia, Times, 'Times New Roman', serif;line-height:120%;padding-top:10px;padding-right:30px;padding-bottom:5px;padding-left:30px;">
-<div style="font-size: 12px; line-height: 14px; font-family: 'Bitter', Georgia, Times, 'Times New Roman', serif; color: #134C75;">
-<p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;"><span style="font-size: 24px;"><strong>Canmore Clubhouse</strong></span></p>
-</div>
-</div>
-<!--[if mso]></td></tr></table><![endif]-->
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 60px; padding-left: 60px; padding-top: 10px; padding-bottom: 10px; font-family: Arial, sans-serif"><![endif]-->
-<div style="color:#555555;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:120%;padding-top:10px;padding-right:60px;padding-bottom:10px;padding-left:60px;">
-<div style="font-size: 12px; line-height: 14px; color: #555555; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 12px; text-align: center; margin: 0;"><span style="font-size: 10px;">31-person hostel with dorm-style accommodation a short drive from Canmore. Great access to all town recreation and amenities. Free Wi-Fi. No smoking on the premises.</span></p>
-</div>
-</div>
-<!--[if mso]></td></tr></table><![endif]-->
-<div align="center" class="img-container center autowidth" style="padding-right: 10px;padding-left: 10px;">
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr style="line-height:0px"><td style="padding-right: 10px;padding-left: 10px;" align="center"><![endif]-->
-<div style="font-size:1px;line-height:10px"> </div><img align="center" alt="Image" border="0" class="center autowidth" src="https://www.alpineclubofcanada.ca/WEB/images/ACC/Huts/CH/Gallery/CH-Gallery3.jpg" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; clear: both; border: 0; height: auto; float: none; width: 100%; max-width: 220px; display: block;" title="Image" width="220"/>
-<div style="font-size:1px;line-height:10px"> </div>
-<!--[if mso]></td></tr></table><![endif]-->
-</div>
+<% else %>
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 30px; padding-left: 30px; padding-top: 10px; padding-bottom: 20px; font-family: Arial, sans-serif"><![endif]-->
 <div style="color:#7E7E7E;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:150%;padding-top:10px;padding-right:30px;padding-bottom:20px;padding-left:30px;">
 <div style="font-size: 12px; line-height: 18px; color: #7E7E7E; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 14px; line-height: 21px;">You are scheduled to visit <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong>Canmore Clubhouse</strong></span> between <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong>15-05-19</strong></span> and <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong>17-05-19<span style="color: #7e7e7e; line-height: 21px; font-size: 14px;">.</span></strong></span></span></p>
+    <p style="font-size: 14px; line-height: 21px; text-align: center; margin: 0;"><span style="font-size: 14px; line-height: 21px;">You have scheduled a visit to <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong><%= "The #{reservation.facility.name}" %></strong></span> between <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong><%= reservation.first_night %></strong></span> and <span style="color: #134c75; line-height: 21px; font-size: 14px;"><strong><%= reservation.departure_date %></strong></span></span></p>
 </div>
 </div>
 <!--[if mso]></td></tr></table><![endif]-->
@@ -587,15 +518,15 @@
 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-right: 10px; padding-left: 10px; padding-top: 5px; padding-bottom: 5px; font-family: Arial, sans-serif"><![endif]-->
 <div style="color:#134c75;font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:200%;padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:10px;">
 <div style="font-size: 12px; line-height: 24px; color: #134c75; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;">
-<p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;">15-05-19 for 3 people</p>
-<p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;">16-05-19 for 1 person</p>
+<% reservation.bookings.sort_by { |booking| booking.date }.each do |booking| %>
+    <p style="font-size: 14px; line-height: 28px; text-align: center; margin: 0;"><%=  "#{booking.date} for #{booking.number_of_users}" %></p>
+<% end %>
 </div>
 </div>
 <!--[if mso]></td></tr></table><![endif]-->
+<% end %>
 <div align="center" class="button-container" style="padding-top:10px;padding-right:10px;padding-bottom:10px;padding-left:10px;">
-<!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"><tr><td style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="http://bit.ly/2nU27bC" style="height:31.5pt; width:189.75pt; v-text-anchor:middle;" arcsize="58%" stroke="false" fillcolor="#49a6e8"><w:anchorlock/><v:textbox inset="0,0,0,0"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:14px"><![endif]--><a href="http://bit.ly/2nU27bC" style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #49a6e8; border-radius: 24px; -webkit-border-radius: 24px; -moz-border-radius: 24px; width: auto; width: auto; border-top: 1px solid #49a6e8; border-right: 1px solid #49a6e8; border-bottom: 1px solid #49a6e8; border-left: 1px solid #49a6e8; padding-top: 5px; padding-bottom: 5px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;" target="_blank"><span style="padding-left:25px;padding-right:25px;font-size:14px;display:inline-block;">
-<span style="font-size: 16px; line-height: 32px;"><span style="font-size: 14px; line-height: 28px;">VIEW CANMORE CLUBHOUSE</span></span>
-</span></a>
+    <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;"><tr><td style="padding-top: 10px; padding-right: 10px; padding-bottom: 10px; padding-left: 10px" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="<%= facility_info.link %>" style="height:25.5pt; width:120.75pt; v-text-anchor:middle;" arcsize="71%" stroke="false" fillcolor="#49a6e8"><w:anchorlock/><v:textbox inset="0,0,0,0"><center style="color:#ffffff; font-family:Arial, sans-serif; font-size:12px"><![endif]--><a href="<%= facility_info.link %>" style="-webkit-text-size-adjust: none; text-decoration: none; display: inline-block; color: #ffffff; background-color: #49a6e8; border-radius: 24px; -webkit-border-radius: 24px; -moz-border-radius: 24px; width: auto; width: auto; border-top: 1px solid #49a6e8; border-right: 1px solid #49a6e8; border-bottom: 1px solid #49a6e8; border-left: 1px solid #49a6e8; padding-top: 5px; padding-bottom: 5px; font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; text-align: center; mso-border-alt: none; word-break: keep-all;" target="_blank"><span style="padding-left:25px;padding-right:25px;font-size:12px;display:inline-block;"><span style="font-size: 12px; line-height: 24px;">VIEW THE <%= reservation.facility.name.upcase %></span></span></a>
 <!--[if mso]></center></v:textbox></v:roundrect></td></tr></table><![endif]-->
 </div>
 <table border="0" cellpadding="0" cellspacing="0" class="divider" style="table-layout: fixed; vertical-align: top; border-spacing: 0; border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; min-width: 100%; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;" valign="top" width="100%">
@@ -623,6 +554,7 @@
 </div>
 </div>
 </div>
+<% end %>
 <div style="background-color:#f3f3f3;">
 <div class="block-grid" style="Margin: 0 auto; min-width: 320px; max-width: 605px; overflow-wrap: break-word; word-wrap: break-word; word-break: break-word; background-color: #ffffff;;">
 <div style="border-collapse: collapse;display: table;width: 100%;background-color:#ffffff;">
