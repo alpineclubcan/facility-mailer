@@ -460,7 +460,7 @@
 </div>
 </div>
 </div>
-<% itinerary.reservations.each do |reservation| %>
+<% itinerary.reservations.sort_by { |res| res.first_night }.each do |reservation| %>
 <% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
 <% survey_link = "https://form.jotform.com/82524425273253?facility=#{reservation.facility.code}&email=#{itinerary.guest.email.to_s}&arrival_date=#{reservation.first_night}&departure_date=#{reservation.departure_date}" %>
 <div style="background-color:#f3f3f3;">
