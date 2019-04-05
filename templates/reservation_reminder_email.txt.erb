@@ -3,11 +3,13 @@ Greetings from The Alpine Club of Canada! A friendly reminder for your upcoming 
 Your reservation details:
 
 --------------------
-<% itinerary.reservations.each do |reservation| %> <% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
+<% itinerary.reservations.sort_by { |res| res.first_night }.each do |reservation| %> <% facility_info = facilities.find { |fac| fac.code == reservation.facility.code } %>
 The <%= reservation.facility.name %>
 <% if reservation.congruent? && reservation.continuous? %>
   You have scheduled <%= reservation.group_sizes.uniq == [1] ? 'a visit to' : "a group of #{reservation.group_sizes.first} to visit" %> The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.departure_date %>.
 <% else %>
+You have scheduled a visit to The <%= reservation.facility.name %> between <%= reservation.first_night %> and <%= reservation.departure_date %>.
+
 Breakdown of your visit:
   <% reservation.bookings.each do |booking| %>
     - <%= booking.date %> for <%= booking.number_of_users %> <%= booking.number_of_users > 1 ? 'people' : 'person' %>
