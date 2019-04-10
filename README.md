@@ -1,5 +1,5 @@
 # facility-mailer
-Mails communications to facility users after their stay date has finished.
+Mails communications to facility users before or after their stay.
 
 
 ## Setup
