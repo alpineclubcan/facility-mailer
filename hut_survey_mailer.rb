@@ -53,12 +53,18 @@ end
 
 CONFIG.sending_options.each do |option|
   next if option.fetch('skip', false) 
+  exclusions = option.fetch('exclude', [])
+
+  emails = []
 
   email_template = Email::Template.new(option.template, template(name: option.template, format: :html), template(name: option.template, format: :txt))
   itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay).call
 
-  emails = itineraries.map do |itinerary| 
-      Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
+  itineraries.each do |itinerary| 
+    itinerary.reservations.select! { |res| !exclusions.include?(res.facility.code) }
+    next if itinerary.reservations.empty?
+
+    emails << Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
   end
 
   emails.each do |email|
