@@ -18,20 +18,21 @@ test:
         password: ''
 
     db:
-        host: localhost 
-        dbname: db_name
+        host: host 
+        dbname: dbname
         port: 5432
-        user: username
-        password: password
+        user: root
+        password: password 
 
     sending_options:
         - delay: -2
           subject: Thank you for staying with us!
           template: hut_survey_email
+          exclude: ['CH', 'BELL', 'BOSWELL', 'HER', 'GUIDE']
         - delay: 5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
-          skip: true
+          exclude: ['HER', 'GUIDE']
 
 development:
     smtp:
@@ -41,20 +42,21 @@ development:
         password: ''
 
     db:
-        host: localhost 
-        dbname: db_name
+        host: host 
+        dbname: dbname
         port: 5432
-        user: username
-        password: password
+        user: root
+        password: password 
 
     sending_options:
         - delay: -2
           subject: Thank you for staying with us!
           template: hut_survey_email
+          exclude: ['CH', 'BELL', 'BOSWELL', 'HER', 'GUIDE']
         - delay: 5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
-          skip: true
+          exclude: ['HER', 'GUIDE']
 
 production:
     smtp:
@@ -64,18 +66,19 @@ production:
         password: ''
 
     db:
-        host: localhost 
-        dbname: db_name
+        host: host 
+        dbname: dbname
         port: 5432
-        user: username
-        password: password
+        user: root
+        password: password 
 
     sending_options:
         - delay: -2
           subject: Thank you for staying with us!
           template: hut_survey_email
+          exclude: ['CH', 'BELL', 'BOSWELL', 'HER', 'GUIDE']
         - delay: 5
           subject: Don't forget about your upcoming reservation!
           template: reservation_reminder_email
-          skip: true
+          exclude: ['HER', 'GUIDE']
 
