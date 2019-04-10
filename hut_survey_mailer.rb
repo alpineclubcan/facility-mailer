@@ -62,8 +62,14 @@ CONFIG.sending_options.each do |option|
   end
 
   emails.each do |email|
-    message = email.render
-    message.deliver
+    begin
+      message = email.render
+      message.deliver
+    rescue NoMethodError => e
+      puts "An error occurred while rendering your mail message. Check that the right data values are being passed to the template.\n#{e}"
+    rescue => e
+      puts "An error occurred while attempting to render or deliver the message:\n#{e}"
+    end
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
