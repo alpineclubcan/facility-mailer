@@ -20,6 +20,7 @@
 # Third-party requires
 require 'pathname'
 require 'hash_dot'
+require 'datetime'
 require 'pg'
 require 'yaml'
 
@@ -79,6 +80,10 @@ CONFIG.sending_options.each do |option|
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
+
+  if emails.length != itineraries.length
+    puts "#{(emails.length - itineraries.length).abs} emails were skipped for '#{option.template}' at #{DateTime.now}."
+  end
 
 end
 
