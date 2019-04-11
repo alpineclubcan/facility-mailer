@@ -1,14 +1,14 @@
 #!/usr/bin/env ruby 
-# Hut Survey Mailer
+# Facility Mailer
 #
-# Version 0.2.2
+# Version 1.1.0
 #
 # The Alpine Club of Canada is a non-profit organization that promotes
 # mountain culture and involvement in mountain activities. The Club manages
 # and handles bookings for over 30 backcountry facilities.
 #
-# This application emails facility experience surveys to guests at a given
-# interval after their stay has completed.
+# This application emails facility communications to guests at a given
+# interval before or after their stay. 
 #
 # Usage:
 #
@@ -53,17 +53,29 @@ end
 
 CONFIG.sending_options.each do |option|
   next if option.fetch('skip', false) 
+  exclusions = option.fetch('exclude', [])
+
+  emails = []
 
   email_template = Email::Template.new(option.template, template(name: option.template, format: :html), template(name: option.template, format: :txt))
   itineraries = Merlin::get_itineraries_from_delay(db: CONFIG.db, delay: option.delay).call
 
-  emails = itineraries.map do |itinerary| 
-      Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
+  itineraries.each do |itinerary| 
+    itinerary.reservations.select! { |res| !exclusions.include?(res.facility.code) }
+    next if itinerary.reservations.empty?
+
+    emails << Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
   end
 
   emails.each do |email|
-    message = email.render
-    message.deliver
+    begin
+      message = email.render
+      message.deliver
+    rescue NoMethodError => e
+      puts "An error occurred while rendering your mail message. Check that the right data values are being passed to the template.\n#{e}"
+    rescue => e
+      puts "An error occurred while attempting to render or deliver the message:\n#{e}"
+    end
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
