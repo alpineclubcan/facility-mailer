@@ -20,7 +20,7 @@
 # Third-party requires
 require 'pathname'
 require 'hash_dot'
-require 'datetime'
+require 'date'
 require 'pg'
 require 'yaml'
 
