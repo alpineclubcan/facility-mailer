@@ -63,9 +63,7 @@ CONFIG.sending_options.each do |option|
 
   itineraries.each do |itinerary| 
     itinerary.reservations.select! { |res| !exclusions.include?(res.facility.code) }
-    next if itinerary.reservations.empty?
-
-    emails << Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
+    emails.push(Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } })) unless itinerary.reservations.empty?
   end
 
   emails.each do |email|
