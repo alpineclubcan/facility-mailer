@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 # Facility Mailer
 #
-# Version 1.1.0
+# Version 1.2.0
 #
 # The Alpine Club of Canada is a non-profit organization that promotes
 # mountain culture and involvement in mountain activities. The Club manages
@@ -20,6 +20,7 @@
 # Third-party requires
 require 'pathname'
 require 'hash_dot'
+require 'date'
 require 'pg'
 require 'yaml'
 
@@ -62,9 +63,7 @@ CONFIG.sending_options.each do |option|
 
   itineraries.each do |itinerary| 
     itinerary.reservations.select! { |res| !exclusions.include?(res.facility.code) }
-    next if itinerary.reservations.empty?
-
-    emails << Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } }) 
+    emails.push(Email.new(options: { to: itinerary.guest.email.to_s, subject: option.subject, template: email_template }, data: { itinerary: itinerary, facilities: FACILITIES, actions: { get_lock_combos: Merlin::get_lock_combinations_for_date.curry[CONFIG.db] } })) unless itinerary.reservations.empty?
   end
 
   emails.each do |email|
@@ -79,6 +78,10 @@ CONFIG.sending_options.each do |option|
   end
 
   puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
+
+  if emails.length != itineraries.length
+    puts "#{(itineraries.length - emails.length).abs} emails were skipped for '#{option.template}' at #{DateTime.now}."
+  end
 
 end
 
