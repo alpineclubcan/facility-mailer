@@ -18,7 +18,7 @@ module Merlin
 
         invoices += res.map(&ROW_TO_INVOICE)
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from beginning.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from beginning.\n#{e.message}"
         raise
       ensure
         conn&.close
@@ -39,7 +39,7 @@ module Merlin
 
         invoices += res.map(&ROW_TO_INVOICE)
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from ending.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from ending.\n#{e.message}"
         raise
       ensure
         conn&.close
@@ -61,7 +61,7 @@ module Merlin
         reservations += ROWS_TO_RESERVATIONS.call(res)
 
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
         raise
       ensure
         conn&.close
@@ -82,7 +82,7 @@ module Merlin
 
         combinations += res.map(&ROW_TO_COMBINATION)
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get lock combinations.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get lock combinations.\n#{e.message}"
         raise
       ensure
         conn&.close
