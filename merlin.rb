@@ -7,6 +7,10 @@ module Merlin
   Invoice = Struct.new(:id, :contact_id, :contact_email_address)
   LockCombination = Struct.new(:value, :valid_from, :valid_to)
 
+  def self.pretty_structs(structs)
+    "\n\t#{structs.map(&:to_h).join("\n\t")}"
+  end
+
   def self.get_invoices_with_stays_beginning(db:, date:)
     lambda do
       invoices = []
@@ -18,12 +22,14 @@ module Merlin
 
         invoices += res.map(&ROW_TO_INVOICE)
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from beginning.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from beginning.\n#{e.message}"
         raise
       ensure
         conn&.close
       end
        
+      STDOUT.puts "#{fnow} - Invoices found with stays beginning #{date}: #{pretty_structs(invoices)}"
+
       invoices
     end
   end
@@ -39,12 +45,14 @@ module Merlin
 
         invoices += res.map(&ROW_TO_INVOICE)
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from ending.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get invoices from ending.\n#{e.message}"
         raise
       ensure
         conn&.close
       end
       
+      STDOUT.puts "#{fnow} - Invoices found with stays ending #{date}: #{pretty_structs(invoices)}}"
+
       invoices
     end
   end
@@ -61,7 +69,7 @@ module Merlin
         reservations += ROWS_TO_RESERVATIONS.call(res)
 
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get itinerary for invoice.\n#{e.message}"
         raise
       ensure
         conn&.close
@@ -82,7 +90,7 @@ module Merlin
 
         combinations += res.map(&ROW_TO_COMBINATION)
       rescue PG::Error => e
-        puts "An error of type #{e.class} occurred at #{fnow} while attempting to get lock combinations.\n#{e.message}"
+        STDERR.puts "An error of type #{e.class} occurred at #{fnow} while attempting to get lock combinations.\n#{e.message}"
         raise
       ensure
         conn&.close
@@ -114,6 +122,10 @@ module Merlin
     end
   end
 
+  def self.fnow
+    now.strftime(DATE_FORMAT)
+  end
+
   private
 
   DATE_FORMAT = '%H:%M:%S %Y-%m-%d'.freeze
@@ -131,10 +143,6 @@ module Merlin
       Itinerary::Reservation.new(key, value.map(&ROW_TO_BOOKING))
     end
 
-  end
-
-  def self.fnow
-    now.strftime(DATE_FORMAT)
   end
   
   def self.now
