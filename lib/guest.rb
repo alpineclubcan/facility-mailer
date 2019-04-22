@@ -63,13 +63,8 @@ class Guest
   end
 
   EmailAddress = Struct.new(:raw) do
-    def initialize(*args)
-      super(*args)
-      self.raw = raw.downcase
-    end
-
     def to_s
-      raw
+      raw.strip
     end
 
     def to_email
