@@ -57,7 +57,7 @@ def pretty_backtrace(exception)
 end
 
 def pretty_exception(message, exception)
-  "#{DateTime.now.strftime('%F %T')} - #{message}\n#{pretty_backtrace(exception)}\n"
+  "#{Merlin::fnow} - #{message}\n#{pretty_backtrace(exception)}\n"
 end
 
 CONFIG.sending_options.each do |option|
@@ -87,10 +87,10 @@ CONFIG.sending_options.each do |option|
     end
   end
 
-  STDOUT.puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
+  STDOUT.puts "#{Merlin::fnow} - No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
 
   if emails.length != itineraries.length
-    STDOUT.puts "#{(itineraries.length - emails.length).abs} emails were skipped for '#{option.template}' at #{DateTime.now}."
+    STDOUT.puts "#{Merlin::fnow} - #{(itineraries.length - emails.length).abs} emails were skipped for '#{option.template}'."
   end
 
 end
