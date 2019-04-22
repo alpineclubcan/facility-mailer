@@ -52,6 +52,14 @@ def template(name:, format:)
   File.read("#{TEMPLATES_DIR}/#{name}.#{format.to_s}.erb")
 end
 
+def pretty_backtrace(exception)
+  "\tat #{exception.backtrace.join("\n\tat ")}"
+end
+
+def pretty_exception(message, exception)
+  "#{DateTime.now.strftime('%F %T')} - #{message}\n#{pretty_backtrace(exception)}\n"
+end
+
 CONFIG.sending_options.each do |option|
   next if option.fetch('skip', false) 
   exclusions = option.fetch('exclude', [])
@@ -71,16 +79,18 @@ CONFIG.sending_options.each do |option|
       message = email.render
       message.deliver
     rescue NoMethodError => e
-      puts "An error occurred while rendering your mail message. Check that the right data values are being passed to the template.\n#{e}"
+      STDERR.puts pretty_exception('An error occurred while rendering your mail message. Check that the right data values are being passed to the template.', e)
+    rescue Errno::ECONNREFUSED => e
+      STDERR.puts pretty_exception('An error occurred while connecting to the SMTP server.', e)
     rescue => e
-      puts "An error occurred while attempting to render or deliver the message:\n#{e}"
+      STDERR.puts pretty_exception("An error of type #{e.class} occurred while attempting to render or deliver the message.", e)
     end
   end
 
-  puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
+  STDOUT.puts "No visits were found #{option.delay >= 0 ? 'ending' : 'starting'} on #{Date::today - option.delay}." if emails.empty?
 
   if emails.length != itineraries.length
-    puts "#{(itineraries.length - emails.length).abs} emails were skipped for '#{option.template}' at #{DateTime.now}."
+    STDOUT.puts "#{(itineraries.length - emails.length).abs} emails were skipped for '#{option.template}' at #{DateTime.now}."
   end
 
 end
