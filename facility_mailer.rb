@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby 
 # Facility Mailer
 #
-# Version 1.2.0
+# Version 1.4.0
 #
 # The Alpine Club of Canada is a non-profit organization that promotes
 # mountain culture and involvement in mountain activities. The Club manages
